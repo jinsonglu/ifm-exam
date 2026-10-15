@@ -683,16 +683,24 @@
     </div>
   </header>
 
-  <div id="selection-tooltip">
-    <div class="tooltip-content">
-      <div class="tooltip-info">
-        <div>
+      <div id="selection-tooltip">
+    <div class="tooltip-content" style="display:flex; align-items:center; justify-content:space-between; gap:0.8rem; flex-wrap:wrap;">
+      <div class="tooltip-info" style="flex:1; min-width:220px;">
+        <div style="display:flex; align-items:baseline; gap:0.5rem;">
           <span class="tooltip-word" id="tt-word">word</span>
           <span class="tooltip-ipa" id="tt-ipa">/ipa/</span>
         </div>
-        <div class="tooltip-cn" id="tt-cn">释义</div>
+        <div style="margin-top:0.35rem;">
+          <input type="text" id="tt-cn" class="tooltip-input" 
+            placeholder="可在此直接修改、输入或长按粘贴释义..." 
+            style="width:100%; box-sizing:border-box; background:#1e293b; color:#f8fafc; border:1px solid #475569; border-radius:6px; padding:0.45rem 0.65rem; font-size:0.9rem; outline:none;"
+            onclick="event.stopPropagation()"
+            onfocus="this.style.borderColor='#38bdf8'; this.style.background='#0f172a';"
+            onblur="this.style.borderColor='#475569'; this.style.background='#1e293b';"
+            onkeydown="if(event.key==='Enter') saveSelectedWord(event)">
+        </div>
       </div>
-      <div class="tooltip-actions">
+      <div class="tooltip-actions" style="display:flex; gap:0.4rem; align-items:center;">
         <button class="tooltip-btn" onclick="playSelectedWord(event)" title="朗读">🔊 读音</button>
         <button class="tooltip-btn tooltip-btn-primary" onclick="saveSelectedWord(event)" title="收录到生词本">⭐ 收录生词本</button>
         <button class="tooltip-close" onclick="closeTooltip(event)" title="关闭">✕</button>
@@ -1149,26 +1157,32 @@
 
           // 1. 本地词典秒显
           const localEntry = MEDICAL_DICT[cleanKey] || MEDICAL_DICT[text.toLowerCase().trim()];
+          const cnInp = document.getElementById('tt-cn');
           if (localEntry && localEntry.cn) {
             currentDefinition = localEntry.cn;
             currentIpa = localEntry.ipa || '';
             document.getElementById('tt-ipa').innerText = currentIpa;
-            document.getElementById('tt-cn').innerText = currentDefinition;
+            if (cnInp) cnInp.value = currentDefinition;
             tooltip.style.display = 'block';
           } else {
-            // 2. 本地未收录，先弹窗提示翻译中，然后异步秒级补齐
+            // 2. 本地未收录
             currentDefinition = '';
             currentIpa = '';
             document.getElementById('tt-ipa').innerText = '';
-            document.getElementById('tt-cn').innerText = '🔍 正在智能翻译释义...';
+            if (cnInp) {
+              cnInp.value = '';
+              cnInp.placeholder = '可在此直接输入或长按粘贴苹果词典释义...';
+            }
             tooltip.style.display = 'block';
 
             const res = await fetchTranslation(text);
-            if (currentSelectedText === text) {
+            if (currentSelectedText === text && res && res.cn) {
               currentDefinition = res.cn;
               currentIpa = res.ipa || '';
               document.getElementById('tt-ipa').innerText = currentIpa;
-              document.getElementById('tt-cn').innerText = currentDefinition;
+              if (cnInp && !cnInp.value) {
+                cnInp.value = currentDefinition;
+              }
             }
           }
         }
@@ -1181,7 +1195,11 @@
 
       document.addEventListener('touchend', function(e) {
         if (e.target.closest('#selection-tooltip')) return;
-        setTimeout(checkAndShow, 200);
+        setTimeout(checkAndShow, 120);
+      });
+
+      document.addEventListener('selectionchange', function() {
+        setTimeout(checkAndShow, 120);
       });
 
       tooltip.addEventListener('touchstart', function(e) { e.stopPropagation(); });
@@ -1205,13 +1223,12 @@
       }
       if (!currentSelectedText) return;
 
-      let finalCn = currentDefinition;
-      let finalIpa = currentIpa;
+      const cnInp = document.getElementById('tt-cn');
+      let finalCn = (cnInp && cnInp.value) ? cnInp.value.trim() : currentDefinition;
       if (!finalCn || finalCn.includes('正在智能翻译')) {
-        const res = await fetchTranslation(currentSelectedText);
-        finalCn = res.cn;
-        finalIpa = res.ipa;
+        finalCn = '自行记忆';
       }
+      let finalIpa = currentIpa;
 
       if (!vocabList.some(v => v.word.toLowerCase() === currentSelectedText.toLowerCase())) {
         vocabList.unshift({
@@ -1244,6 +1261,22 @@
       renderVocabList();
     }
 
+    
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function updateVocabCn(idx, val) {
+      if (!vocabList[idx]) return;
+      const clean = val.trim() || '自行记忆';
+      if (vocabList[idx].cn !== clean) {
+        vocabList[idx].cn = clean;
+        localStorage.setItem(STORAGE_KEY_VOCAB, JSON.stringify(vocabList));
+        showToast(`已保存【${vocabList[idx].word}】的新释义！`);
+      }
+    }
+
     function renderVocabList() {
       const tbody = document.getElementById('vocab-table-body');
       if (vocabList.length === 0) {
@@ -1254,7 +1287,13 @@
         <tr>
           <td><strong>${item.word}</strong></td>
           <td style="color: #8b5cf6; font-family: monospace;">${item.ipa || '-'}</td>
-          <td>${item.cn || '<span style="color:var(--text-muted);">自行记忆</span>'}</td>
+          <td>
+            <input type="text" value="${escapeHtml(item.cn || '')}" 
+              placeholder="可直接在此修改释义或长按粘贴..."
+              style="width: 100%; box-sizing: border-box; padding: 0.35rem 0.55rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font-size: 0.9rem; outline: none;"
+              onfocus="this.style.borderColor='var(--primary)'"
+              onblur="this.style.borderColor='var(--border)'; updateVocabCn(${idx}, this.value)">
+          </td>
           <td style="text-align: center;">
             <button class="btn-icon" onclick="speakWord('${item.word}')" title="播放真人自然发音">🔊</button>
           </td>
