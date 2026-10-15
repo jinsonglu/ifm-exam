@@ -22,6 +22,46 @@
       line-height: 1.6;
       padding: 2.5rem 1.5rem;
     }
+
+    #lock-screen {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+    .lock-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.2rem;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    .lock-icon { font-size: 2.6rem; margin-bottom: 0.8rem; }
+    .lock-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; }
+    .lock-sub { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5; }
+    .lock-input {
+      width: 100%; padding: 0.85rem 1rem; border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 1rem; margin-bottom: 1rem; outline: none; background: var(--bg); color: var(--text);
+    }
+    .lock-checkbox {
+      display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted);
+      margin-bottom: 1.3rem; cursor: pointer; justify-content: center;
+    }
+    .lock-btn {
+      width: 100%; background: var(--primary); color: #fff; border: none; padding: 0.85rem;
+      border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    }
+    .lock-btn:hover { background: #1e40af; }
+    .lock-error { color: #b91c1c; font-size: 0.85rem; margin-top: 0.8rem; display: none; font-weight: 600; }
+
     .header {
       max-width: 900px;
       margin: 0 auto 2rem;
@@ -114,16 +154,31 @@
   </style>
 </head>
 <body>
+  <!-- 密码锁屏遮罩 -->
+  <div id="lock-screen">
+    <div class="lock-box">
+      <div class="lock-icon">🔒</div>
+      <div class="lock-title">IFM 考场总控大厅 · 私密认证</div>
+      <div class="lock-sub">本考场系统已对 960 道真题全量实施 AES-256 加密保护，请输入访问密码：</div>
+      <input type="password" id="portal-pwd-input" class="lock-input" placeholder="请输入访问密码..." onkeydown="if(event.key==='Enter') unlockPortal()">
+      <label class="lock-checkbox">
+        <input type="checkbox" id="portal-remember-check" checked> 在此设备上保持登录（下次免密）
+      </label>
+      <button class="lock-btn" onclick="unlockPortal()">🔓 验证并进入考场大厅</button>
+      <div id="portal-error" class="lock-error">❌ 密码错误，请重新输入</div>
+    </div>
+  </div>
+
   <div class="header">
     <h1>🩺 IFM 官方认证全真模拟考场 · 总控大厅</h1>
-    <p class="sub">全量覆盖 6 套试卷 · 960 道临床案例真题 · 纯英文沉浸模考 · 划词发音 · 错题 AI 闭环</p>
+    <p class="sub">全量覆盖 6 套试卷 · 960 道临床案例真题 · 高强度 AES-256 加密保护 · 纯英文沉浸模考</p>
   </div>
 
   <div class="grid">
     
     <a href="IFM_Practice_Exam_1.html" class="exam-card">
       <div>
-        <span class="badge">全真模拟卷 · 160 题</span>
+        <span class="badge">🔒 AES 加密卷 · 160 题</span>
         <div class="title">IFM Practice Exam 1</div>
         <div class="desc">完整覆盖 Matrix 矩阵、GOTOIT 临床流程、综合案例与官方 Rationale 深度解析。</div>
       </div>
@@ -132,7 +187,7 @@
     
     <a href="IFM_Practice_Exam_2.html" class="exam-card">
       <div>
-        <span class="badge">全真模拟卷 · 160 题</span>
+        <span class="badge">🔒 AES 加密卷 · 160 题</span>
         <div class="title">IFM Practice Exam 2</div>
         <div class="desc">完整覆盖 Matrix 矩阵、GOTOIT 临床流程、综合案例与官方 Rationale 深度解析。</div>
       </div>
@@ -141,7 +196,7 @@
     
     <a href="IFM_Practice_Exam_3.html" class="exam-card">
       <div>
-        <span class="badge">全真模拟卷 · 160 题</span>
+        <span class="badge">🔒 AES 加密卷 · 160 题</span>
         <div class="title">IFM Practice Exam 3</div>
         <div class="desc">完整覆盖 Matrix 矩阵、GOTOIT 临床流程、综合案例与官方 Rationale 深度解析。</div>
       </div>
@@ -150,7 +205,7 @@
     
     <a href="IFM_Practice_Exam_4.html" class="exam-card">
       <div>
-        <span class="badge">全真模拟卷 · 160 题</span>
+        <span class="badge">🔒 AES 加密卷 · 160 题</span>
         <div class="title">IFM Practice Exam 4</div>
         <div class="desc">完整覆盖 Matrix 矩阵、GOTOIT 临床流程、综合案例与官方 Rationale 深度解析。</div>
       </div>
@@ -159,7 +214,7 @@
     
     <a href="IFM_Practice_Exam_5.html" class="exam-card">
       <div>
-        <span class="badge">全真模拟卷 · 160 题</span>
+        <span class="badge">🔒 AES 加密卷 · 160 题</span>
         <div class="title">IFM Practice Exam 5</div>
         <div class="desc">完整覆盖 Matrix 矩阵、GOTOIT 临床流程、综合案例与官方 Rationale 深度解析。</div>
       </div>
@@ -168,7 +223,7 @@
     
     <a href="IFM_Practice_Exam_6.html" class="exam-card">
       <div>
-        <span class="badge">全真模拟卷 · 160 题</span>
+        <span class="badge">🔒 AES 加密卷 · 160 题</span>
         <div class="title">IFM Practice Exam 6</div>
         <div class="desc">完整覆盖 Matrix 矩阵、GOTOIT 临床流程、综合案例与官方 Rationale 深度解析。</div>
       </div>
@@ -182,9 +237,34 @@
     <ul>
       <li><strong>第一步（盲测）</strong>：按 20 题一组纯英文做题，遇到生词鼠标划选听发音、看释义并收录生词本。</li>
       <li><strong>第二步（核对）</strong>：每 20 题交卷核对，看绿色正确项与官方生化机制解析。</li>
-      <li><strong>第三步（AI 强化）</strong>：在【错题复盘】点击“一键复制错题清单给 AI”，粘贴给 Gemini / NotebookLM 调取讲义深度解析并做二次变式盲测。</li>
+      <li><strong>第三步（AI / NotebookLM 强化）</strong>：在【错题复盘】点击“复制 NotebookLM 提问指令”或“复制为复盘笔记源”，无缝调取课程讲义做深度剖析！</li>
       <li><strong>第四步（冲刺）</strong>：结合生词本导出至 Anki 或 Obsidian 持续磨耳朵。</li>
     </ul>
   </div>
+
+  <script>
+    const CORRECT_HASH = "lilu2026"; // 简单验证，真正题库在每个exam页面AES强解密
+    function unlockPortal() {
+      const pwd = document.getElementById('portal-pwd-input').value.trim();
+      const remember = document.getElementById('portal-remember-check').checked;
+      const err = document.getElementById('portal-error');
+
+      if (pwd === CORRECT_HASH) {
+        if (remember) {
+          localStorage.setItem('ifm_auth_pwd', pwd);
+        }
+        document.getElementById('lock-screen').style.display = 'none';
+      } else {
+        err.style.display = 'block';
+      }
+    }
+
+    window.onload = function() {
+      const saved = localStorage.getItem('ifm_auth_pwd');
+      if (saved === CORRECT_HASH) {
+        document.getElementById('lock-screen').style.display = 'none';
+      }
+    };
+  </script>
 </body>
 </html>
