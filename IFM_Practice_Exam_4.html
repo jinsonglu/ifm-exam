@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IFM 官方全真模拟考场 · Exam 4 (160题全量)</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1e40af;
+      --primary-light: #eff6ff;
+      --accent: #0284c7;
+      --success: #15803d;
+      --success-light: #dcfce7;
+      --danger: #b91c1c;
+      --danger-light: #fee2e2;
+      --warning: #d97706;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --border-dark: #cbd5e1;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    body.dark-mode {
+      --primary: #3b82f6;
+      --primary-hover: #60a5fa;
+      --primary-light: #1e293b;
+      --accent: #38bdf8;
+      --success: #22c55e;
+      --success-light: #14532d33;
+      --danger: #ef4444;
+      --danger-light: #7f1d1d33;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --border-dark: #475569;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 5rem;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.8rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.01em;
+    }
+    .brand .badge {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      border: 1px solid var(--primary);
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-btn {
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      padding: 0.45rem 0.95rem;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .nav-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 0.7rem;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+
+    .batch-bar-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .batch-bar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .batch-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .batch-stats {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .batch-btns-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      gap: 0.5rem;
+    }
+    .batch-btn {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      padding: 0.5rem 0.4rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .batch-btn:hover {
+      border-color: var(--accent);
+      background: var(--primary-light);
+    }
+    .batch-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 4px rgba(30, 58, 138, 0.25);
+    }
+    .batch-btn .batch-sub {
+      font-size: 0.7rem;
+      font-weight: normal;
+      opacity: 0.85;
+    }
+
+    .case-card {
+      background: #eff6ff;
+      border: 2px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: #1e3a8a;
+      line-height: 1.7;
+    }
+    body.dark-mode .case-card {
+      background: #172554;
+      border-color: #1e40af;
+      color: #dbeafe;
+    }
+    .case-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .case-card pre {
+      white-space: pre-wrap;
+      font-family: inherit;
+      font-size: 0.92rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      margin-bottom: 1.3rem;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s;
+    }
+    .card:hover {
+      border-color: var(--border-dark);
+    }
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .q-badge {
+      background: var(--bg);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .question-stem {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+      color: var(--text);
+      user-select: text;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.85rem 1.15rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: var(--card-bg);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      user-select: text;
+    }
+    .option-label:hover {
+      background-color: var(--primary-light);
+      border-color: #93c5fd;
+    }
+    .option-label input[type="radio"] {
+      margin-top: 0.25rem;
+      width: 1.15rem;
+      height: 1.15rem;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .opt-key {
+      font-weight: 700;
+      color: var(--primary);
+      margin-right: 0.2rem;
+    }
+    body.dark-mode .opt-key {
+      color: var(--accent);
+    }
+
+    .option-label.is-correct {
+      background-color: var(--success-light) !important;
+      border-color: var(--success) !important;
+      color: var(--success) !important;
+      font-weight: 600;
+    }
+    .option-label.is-wrong {
+      background-color: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: var(--danger) !important;
+      text-decoration: line-through;
+    }
+
+    .explanation {
+      margin-top: 1.2rem;
+      padding: 1.15rem;
+      background: var(--bg);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+    .exp-row {
+      margin-bottom: 0.6rem;
+    }
+    .exp-row:last-child {
+      margin-bottom: 0;
+    }
+    .exp-tag {
+      display: inline-block;
+      font-weight: 700;
+      color: var(--accent);
+      margin-right: 0.4rem;
+    }
+
+    #selection-tooltip {
+      position: absolute;
+      display: none;
+      background: #0f172a;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.4);
+      z-index: 1000;
+      transform: translate(-50%, -100%);
+      margin-top: -10px;
+      white-space: nowrap;
+      pointer-events: auto;
+      animation: popIn 0.15s ease-out;
+    }
+    #selection-tooltip::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px 6px 0;
+      border-style: solid;
+      border-color: #0f172a transparent;
+    }
+    .tooltip-content {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .tooltip-word {
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    .tooltip-ipa {
+      color: #a78bfa;
+      font-family: "Lucida Sans Unicode", sans-serif;
+      font-size: 0.82rem;
+    }
+    .tooltip-cn {
+      color: #e2e8f0;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .tooltip-btn {
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #fff;
+      border-radius: 5px;
+      padding: 0.2rem 0.5rem;
+      cursor: pointer;
+      font-size: 0.78rem;
+      transition: background 0.15s;
+    }
+    .tooltip-btn:hover {
+      background: #334155;
+    }
+
+    .submit-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      margin-top: 1.5rem;
+    }
+    .btn-submit {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.8rem;
+      border-radius: 9px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.25);
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-submit:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    .btn-next {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1.4rem;
+      border-radius: 9px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-next:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .table-container {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-top: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .custom-table th, .custom-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .custom-table th {
+      background: var(--bg);
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      transition: transform 0.1s;
+    }
+    .btn-icon:hover {
+      transform: scale(1.2);
+    }
+
+    .wrong-item {
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--danger);
+    }
+    .wrong-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .wrong-stem {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+    .wrong-choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.8rem;
+      font-size: 0.88rem;
+    }
+    .my-choice {
+      padding: 0.5rem 0.8rem;
+      background: var(--danger-light);
+      color: var(--danger);
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .correct-choice {
+      padding: 0.5rem 0.8rem;
+      background: var(--success-light);
+      color: var(--success);
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: #fff;
+      padding: 0.7rem 1.4rem;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 2000;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: translate(-50%, -80%); }
+      to { opacity: 1; transform: translate(-50%, -100%); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>🩺 IFM 官方全真模拟考场</h1>
+      <span class="badge">Exam 4 · 160题全量</span>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-btn active" id="tab-exam" onclick="switchView('exam')">📝 英文真题 (160题)</button>
+      <button class="nav-btn" id="tab-vocab" onclick="switchView('vocab')">📖 语音生词本 (<span id="vocab-count">0</span>)</button>
+      <button class="nav-btn" id="tab-wrong" onclick="switchView('wrong')">❌ 错题深度复盘 (<span id="wrong-count">0</span>)</button>
+      <button class="theme-toggle" onclick="toggleTheme()" title="切换明暗主题">🌗</button>
+    </div>
+  </header>
+
+  <div id="selection-tooltip">
+    <div class="tooltip-content">
+      <span class="tooltip-word" id="tt-word">word</span>
+      <span class="tooltip-ipa" id="tt-ipa">/ipa/</span>
+      <span class="tooltip-cn" id="tt-cn">释义</span>
+      <button class="tooltip-btn" onclick="playSelectedWord(event)" title="朗读">🔊 读音</button>
+      <button class="tooltip-btn" onclick="saveSelectedWord(event)" title="收录到生词本">⭐ 收录</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div id="view-exam">
+      <div class="batch-bar-card">
+        <div class="batch-bar-header">
+          <span class="batch-title">📌 分组答题导航（每组 20 题）</span>
+          <span class="batch-stats" id="exam-overall-stats">总进度：0 / 160 题已答</span>
+        </div>
+        <div class="batch-btns-grid" id="batch-grid"></div>
+      </div>
+
+      <div id="questions-container"></div>
+
+      <div class="submit-bar">
+        <div id="batch-status-msg" style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted);">
+          第 <span id="current-group-num">1</span> 组答题中
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn-submit" id="btn-group-submit" onclick="submitCurrentGroup()">📝 交卷核对本组</button>
+          <button class="btn-next" onclick="nextGroup()">下一组 ➡️</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-vocab" style="display: none;">
+      <div class="card" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+          <h2 style="font-size: 1.15rem; color: var(--primary);">📖 沉浸式医学语音生词本</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">划词即查即收录，随时点击 🔊 磨耳朵，支持导出至 Anki 或 Obsidian。</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="nav-btn" onclick="copyVocabMarkdown()">📋 复制为 Markdown 表格</button>
+          <button class="nav-btn" onclick="exportVocabTSV()">📥 导出 Anki 卡片 (TSV)</button>
+          <button class="nav-btn" style="color: var(--danger); border-color: var(--danger);" onclick="clearVocab()">🗑️ 清空生词本</button>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">单词 / 术语</th>
+              <th style="width: 22%;">国际音标 (IPA)</th>
+              <th>功能医学专业释义</th>
+              <th style="width: 80px; text-align: center;">发音</th>
+              <th style="width: 70px; text-align: center;">操作</th>
+            </tr>
+          </thead>
+          <tbody id="vocab-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="view-wrong" style="display: none;">
+      <div class="card" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.8rem;">
+        <div>
+          <h2 style="font-size: 1.15rem; color: var(--danger);">❌ 错题深度复盘与 NotebookLM 联动</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">自动归集各组答错题，一键生成 NotebookLM 专属检索指令或复盘笔记，无缝调取课程讲义。</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button class="nav-btn" style="background: #e0f2fe; border-color: #38bdf8; color: #0369a1; font-weight: 700;" onclick="copyWrongForNotebookLM()">📖 复制 NotebookLM 提问指令</button>
+          <button class="nav-btn" style="background: #fef08a; border-color: #ca8a04; color: #854d0e; font-weight: 700;" onclick="copyWrongForAI()">🤖 复制 Gemini 变式出题</button>
+          <button class="nav-btn" onclick="copyWrongAsNote()">📝 复制为复盘笔记源</button>
+        </div>
+      </div>
+      <div id="wrong-list-container"></div>
+    </div>
+
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const ALL_QUESTIONS = [{"id": 1, "question": "A patient mentions they have felt 'broken' since a severe car accident three years ago. In the 'Environment of Insight,' how should the clinician interpret this statement?", "options": [{"key": "A", "text": "As a purely physical complaint requiring an X-ray of the spine."}, {"key": "B", "text": "As a potential 'Trigger' that shifted their Mental, Emotional, and Spiritual (MES) state."}, {"key": "C", "text": "As a subjective exaggeration that should be ignored in favor of lab results."}, {"key": "D", "text": "As an indication of a primary 'Transport' node imbalance."}], "answer": "B", "rationale": "As a potential 'Trigger' that shifted their Mental, Emotional, and Spiritual (MES) state. Traumatic events can serve as triggers that alter the patient's internal narrative and 'Environment of Insight'.", "caseContext": null}, {"id": 2, "question": "Which clinical imbalance node would be most affected by 'Oxidative Stress' and a lack of protective antioxidants like glutathione?", "options": [{"key": "A", "text": "Energy"}, {"key": "B", "text": "Defense and Repair"}, {"key": "C", "text": "Biotransformation"}, {"key": "D", "text": "Communication"}], "answer": "A", "rationale": "Energy Oxidative stress directly impacts mitochondrial function and the efficiency of the Electron Transport Chain.", "caseContext": null}, {"id": 3, "question": "According to the GOTOIT heuristic, the 'Track' phase involves:", "options": [{"key": "A", "text": "Monitoring the patient's progress and adjusting the treatment plan over time."}, {"key": "B", "text": "Retelling the patient's story using the Timeline."}, {"key": "C", "text": "Ordering a complete set of genetic tests."}, {"key": "D", "text": "Charging the patient for a follow-up visit."}], "answer": "A", "rationale": "Monitoring the patient's progress and adjusting the treatment plan over time. The 'Track' phase ensures the therapeutic partnership is working and allows for adjustments as the patient's health evolves.", "caseContext": null}, {"id": 4, "question": "If a patient has 'Low HDL' and 'High Triglycerides,' which ABCD category is the clinician currently assessing?", "options": [{"key": "A", "text": "Dietary Evaluation"}, {"key": "B", "text": "Clinical Indicators"}, {"key": "C", "text": "Biomarkers"}, {"key": "D", "text": "Anthropometrics"}], "answer": "C", "rationale": "Biomarkers Standard laboratory values like cholesterol and triglycerides are classic examples of biomarkers.", "caseContext": null}, {"id": 5, "question": "In Functional Medicine, how is 'Spirituality' differentiated from 'Religion' in the clinical encounter?", "options": [{"key": "A", "text": "They are considered identical and are mapped to the 'Communication' node."}, {"key": "B", "text": "Spirituality is only assessed in terminal cases, whereas religion is assessed in all cases."}, {"key": "C", "text": "Religion is an organized set of beliefs, while spirituality is the patient's individual sense of meaning and purpose."}, {"key": "D", "text": "Spirituality is considered irrelevant to physiological health, while religion is a lifestyle factor."}], "answer": "C", "rationale": "Religion is an organized set of beliefs, while spirituality is the patient's individual sense of meaning and purpose. Spirituality refers to how a patient connects to something larger than themselves, which provides resilience in the face of illness.", "caseContext": null}, {"id": 6, "question": "A patient reports that their grandmother and mother both suffered from severe autoimmune conditions. In the Functional Medicine Matrix, this family history is categorized as a(n):", "options": [{"key": "A", "text": "Trigger"}, {"key": "B", "text": "Antecedent"}, {"key": "C", "text": "Mediator"}, {"key": "D", "text": "Clinical Indicator"}], "answer": "B", "rationale": "Antecedent Think about factors that are 'pre-existing' or 'inherited' rather than 'catalysts'. Antecedents are factors that predispose an individual to an illness, such as genetics or family history.", "caseContext": null}, {"id": 7, "question": "In the GOTOIT heuristic, what is the specific purpose of the 'Tell' phase for the clinician?", "options": [{"key": "A", "text": "To prescribe the initial treatment plan."}, {"key": "B", "text": "To order the necessary laboratory biomarkers."}, {"key": "C", "text": "To organize the data into the clinical tools."}, {"key": "D", "text": "To retell the patient's story back to them using the Matrix and Timeline."}], "answer": "D", "rationale": "To retell the patient's story back to them using the Matrix and Timeline. This phase focuses on the 'retelling' of the narrative to confirm accuracy and connection. Retelling ensures the clinician has correctly understood the patient's narrative and builds the therapeutic bond.", "caseContext": null}, {"id": 8, "question": "Which clinical imbalance node on the Matrix is responsible for assessing the body's lymphatic and vascular systems?", "options": [{"key": "A", "text": "Structural Integrity"}, {"key": "B", "text": "Assimilation"}, {"key": "C", "text": "Transport"}, {"key": "D", "text": "Communication"}], "answer": "C", "rationale": "Transport Consider the systems that move nutrients, waste, and immune cells throughout the body. The Transport node maps imbalances in the cardiovascular and lymphatic systems.", "caseContext": null}, {"id": 9, "question": "According to the Science of Creating Health, why are 'Modifiable Lifestyle Factors' (MLFs) placed at the bottom of the Matrix?", "options": [{"key": "A", "text": "Because they are the last things a clinician should address."}, {"key": "B", "text": "Because they only relate to genetic expression."}, {"key": "C", "text": "To indicate they are the foundation upon which all other physiological systems rest."}, {"key": "D", "text": "Because they are the least important factors in chronic disease."}], "answer": "C", "rationale": "To indicate they are the foundation upon which all other physiological systems rest. Addressing lifestyle factors is the foundational step in resolving core clinical imbalances.", "caseContext": null}, {"id": 10, "question": "A patient with a history of chronic stress exhibits 'high-fructose corn syrup consumption' and 'low fiber intake.' These would be mapped under which ABCD category?", "options": [{"key": "A", "text": "Biomarkers"}, {"key": "B", "text": "Clinical Indicators"}, {"key": "C", "text": "Anthropometrics"}, {"key": "D", "text": "Diet and Lifestyle"}], "answer": "D", "rationale": "Diet and Lifestyle Dietary habits and specific nutrient intakes are tracked under the 'D' of the ABCDs.", "caseContext": null}, {"id": 11, "question": "How does Monique Class define the 'Environment of Insight' in a way that promotes patient 'Transformation'?", "options": [{"key": "A", "text": "By creating a space where the patient discovers the 'why' behind their symptoms."}, {"key": "B", "text": "By providing a detailed printout of all lab abnormalities."}, {"key": "C", "text": "By focusing solely on the physical clinical indicators."}, {"key": "D", "text": "By the clinician assuming the role of the primary expert."}], "answer": "A", "rationale": "By creating a space where the patient discovers the 'why' behind their symptoms. Focus on the shift from 'receiving information' to 'personal discovery'. Transformation is driven by the patient's internal realization and insight into their own health journey.", "caseContext": null}, {"id": 12, "question": "Which of the following is an example of a 'Functional Lab' as opposed to a standard 'Biomarker'?", "options": [{"key": "A", "text": "Urinary Organic Acids"}, {"key": "B", "text": "Hemoglobin A1c"}, {"key": "C", "text": "Comprehensive Metabolic Panel (CMP)"}, {"key": "D", "text": "Serum Glucose"}], "answer": "A", "rationale": "Urinary Organic Acids Organic acids measure metabolic intermediates, showing how well pathways are actually functioning. Think about which test measures the 'output' or 'efficiency' of a metabolic process.", "caseContext": null}, {"id": 13, "question": "In the context of the Matrix, where would you map 'Hormonal Signaling' and 'Neurotransmitter Balance'?", "options": [{"key": "A", "text": "Defense and Repair"}, {"key": "B", "text": "Communication"}, {"key": "C", "text": "Transport"}, {"key": "D", "text": "Assimilation"}], "answer": "B", "rationale": "Communication Consider the 'messengers' of the body. Communication refers to the signaling molecules that transmit information between cells and organs.", "caseContext": null}, {"id": 14, "question": "During a 'Nutritional Physical Exam,' a clinician notices 'cracking at the corners of the mouth' (Cheilosis). This is categorized as a:", "options": [{"key": "A", "text": "Dietary Factor"}, {"key": "B", "text": "Anthropometric"}, {"key": "C", "text": "Clinical Indicator"}, {"key": "D", "text": "Biomarker"}], "answer": "C", "rationale": "Clinical Indicator Clinical indicators are physical signs of nutrient deficiencies detected during a physical examination.", "caseContext": null}, {"id": 15, "question": "A patient tells you, \"I've been successfully following my new diet and exercise plan for the last 8 months.\" Which stage of the \"Spiral of Change\" are they in?", "options": [{"key": "A", "text": "Action"}, {"key": "B", "text": "Maintenance"}, {"key": "C", "text": "Contemplation"}, {"key": "D", "text": "Preparation"}], "answer": "B", "rationale": "Maintenance Maintenance is defined as having solved the problem for more than 6 months.", "caseContext": null}, {"id": 16, "question": "In the GOTOIT heuristic, during the 'Order' phase, which criteria should a clinician use to prioritize which clinical imbalances to address first?", "options": [{"key": "A", "text": "The patient's personal goals and the most foundational lifestyle imbalances."}, {"key": "B", "text": "Starting with the most expensive functional tests to rule out rare conditions."}, {"key": "C", "text": "Addressing all seven clinical imbalances simultaneously to ensure systemic coverage."}, {"key": "D", "text": "The most complex biomarker abnormalities identified in the lab reports."}], "answer": "A", "rationale": "The patient's personal goals and the most foundational lifestyle imbalances. Prioritization focuses on the patient's readiness and the modifiable lifestyle factors that provide the base for physiological healing.", "caseContext": null}, {"id": 17, "question": "A patient presents with chronic musculoskeletal pain and evidence of increased intestinal permeability. Which node on the Matrix serves as the primary location for mapping both 'barrier function' and 'physical scaffolding'?", "options": [{"key": "A", "text": "Communication"}, {"key": "B", "text": "Defense and Repair"}, {"key": "C", "text": "Structural Integrity"}, {"key": "D", "text": "Assimilation"}], "answer": "C", "rationale": "Structural Integrity Think about the physical 'boundaries' of the body's systems. This node encompasses the health of membranes, barriers (gut/ brain), and the musculoskeletal system.", "caseContext": null}, {"id": 18, "question": "How does the 'Rebalance' step specifically address the 'N' (Nervous System) node to improve gallbladder function?", "options": [{"key": "A", "text": "By reducing the production of cholesterol in the liver."}, {"key": "B", "text": "By increasing sympathetic tone to move bile more quickly through the ducts."}, {"key": "C", "text": "By using stress to trigger the release of bile as a protective mechanism."}, {"key": "D", "text": "By shifting the body into parasympathetic dominance to stimulate CCK release and gallbladder contraction."}], "answer": "D", "rationale": "By shifting the body into parasympathetic dominance to stimulate CCK release and gallbladder contraction. The 'rest and digest' state is essential for the hormonal and neural signals that trigger bile release.", "caseContext": null}, {"id": 19, "question": "A patient has a history of chronic NSAID use. Which biomarker would be most appropriate to monitor for 'occult' damage to the small intestinal mucosa?", "options": [{"key": "A", "text": "Serum Gastrin"}, {"key": "B", "text": "Breath Hydrogen"}, {"key": "C", "text": "Pancreatic Elastase-1"}, {"key": "D", "text": "Fecal Calprotectin"}], "answer": "D", "rationale": "Fecal Calprotectin You're looking for a marker of localized inflammation in the gut wall. NSAIDs are known to cause 'NSAID enteropathy,' and Calprotectin is a sensitive marker for the resulting neutrophil- driven inflammation.", "caseContext": null}, {"id": 20, "question": "In the DIGIN framework, why is 'mastication' (chewing) considered a critical first step in the 'D' (Digestion) node?", "options": [{"key": "A", "text": "It is the only way to activate pancreatic lipase."}, {"key": "B", "text": "It neutralizes stomach acid before it reaches the esophagus."}, {"key": "C", "text": "It increases the surface area for enzymes and triggers cephalic phase secretions."}, {"key": "D", "text": "It prevents the reabsorption of estrogens in the colon."}], "answer": "C", "rationale": "It increases the surface area for enzymes and triggers cephalic phase secretions. Physical breakdown is vital, but the act of chewing also signals the brain to begin secreting HCl and enzymes.", "caseContext": null}, {"id": 21, "question": "What is the primary rationale for using 'Saccharomyces boulardii' during the 'Remove' phase when a patient is taking antibiotics?", "options": [{"key": "A", "text": "It permanently colonizes the gut to replace lost Lactobacillus species."}, {"key": "B", "text": "It directly produces hydrochloric acid to help digest the medication."}, {"key": "C", "text": "It is a beneficial yeast that is not killed by antibiotics and helps prevent opportunistic infections."}, {"key": "D", "text": "It helps the antibiotics penetrate the bacterial cell wall more effectively."}], "answer": "C", "rationale": "It is a beneficial yeast that is not killed by antibiotics and helps prevent opportunistic infections. Being a yeast, it survives antibiotic therapy and competes for space/nutrients, reducing the risk of antibiotic-associated diarrhea.", "caseContext": null}, {"id": 22, "question": "Which specific finding in a stool analysis would provide the strongest evidence for 'Immune Exhaustion' within the Inflammation/Immune (I) node of DIGIN?", "options": [{"key": "A", "text": "Presence of occult blood without an elevation in fecal Lactoferrin."}, {"key": "B", "text": "Elevated Calprotectin paired with low-normal Secretory IgA."}, {"key": "C", "text": "Low Eosinophil Protein X in a patient with known food sensitivities."}, {"key": "D", "text": "High Fecal Fat and high fecal Secretory IgA."}], "answer": "B", "rationale": "Elevated Calprotectin paired with low-normal Secretory IgA. High markers of active inflammation (Calprotectin) alongside a failure to mount a robust mucosal antibody response (sIgA) suggests the GALT is depleted.", "caseContext": null}, {"id": 23, "question": "In the context of the 'Repair' phase, what is the biochemical rationale for choosing Zinc Carnosine over other forms of zinc for a patient with gastric mucosal erosions?", "options": [{"key": "A", "text": "It bypasses the need for hydrochloric acid for systemic absorption."}, {"key": "B", "text": "It acts as a direct prebiotic for butyrate-producing bacteria."}, {"key": "C", "text": "It uniquely stimulates the release of secretin from the duodenum."}, {"key": "D", "text": "It dissociates slowly in the stomach, allowing it to adhere to and protect lesioned tissue."}], "answer": "D", "rationale": "It dissociates slowly in the stomach, allowing it to adhere to and protect lesioned tissue. The chelate structure of zinc carnosine allows it to stick to gastric ulcers and erosions, providing a localized healing effect.", "caseContext": null}, {"id": 24, "question": "A patient with chronic biliary stasis is undergoing a 5R protocol. Which 'Replace' intervention is most critical to ensure the effectiveness of the 'Remove' phase involving lipid-soluble antimicrobials?", "options": [{"key": "A", "text": "Bile salts (e.g., Ox bile)"}, {"key": "B", "text": "Betaine Hydrochloride"}, {"key": "C", "text": "Bromelain"}, {"key": "D", "text": "Amylase"}], "answer": "A", "rationale": "Bile salts (e.g., Ox bile) Bile salts are essential for the emulsification and absorption of fat-soluble substances, including many botanical antimicrobials and fat-soluble vitamins. Bromelain is a mixture of enzymes from pineapple plants used as a dietary supplement for its anti-inflammatory and protein-digesting properties.", "caseContext": null}, {"id": 25, "question": "Which physiological mechanism explains why Corticotropin-Releasing Hormone (CRH) during acute stress directly impacts Intestinal Permeability?", "options": [{"key": "A", "text": "It directly inhibits the synthesis of occludin and claudin mRNA in the nucleus."}, {"key": "B", "text": "It triggers mast cell degranulation, releasing proteases that compromise tight junctions."}, {"key": "C", "text": "It causes a rapid increase in the production of gastric pepsinogen."}, {"key": "D", "text": "It stimulates the overgrowth of Gram-negative bacteria in the ileum."}], "answer": "B", "rationale": "It triggers mast cell degranulation, releasing proteases that compromise tight junctions. Stress-induced CRH activates mast cells in the gut, which release mediators that degrade the protein structures maintaining the intestinal barrier.", "caseContext": null}, {"id": 26, "question": "When interpreting a Lactulose/Mannitol test, how should a result showing low recovery of both sugars but a normal L/M ratio be interpreted?", "options": [{"key": "A", "text": "High levels of serum Zonulin interfering with the renal clearance of the sugars."}, {"key": "B", "text": "Excessive bacterial fermentation of the sugar probes in the small intestine."}, {"key": "C", "text": "Severe 'Leaky Gut' syndrome with high systemic inflammation."}, {"key": "D", "text": "General malabsorption or reduced surface area without increased paracellular leakage."}], "answer": "D", "rationale": "General malabsorption or reduced surface area without increased paracellular leakage. Low recovery of both indicates a reduction in total absorptive capacity, but the normal ratio suggests the 'leakiness' is not disproportionately high.", "caseContext": null}, {"id": 27, "question": "In the DIGIN framework, why is the 'N' (Nervous System) node often considered the 'gatekeeper' for the 'Replace' phase?", "options": [{"key": "A", "text": "Vagal tone is required to stimulate the cephalic phase of digestion and endogenous secretions."}, {"key": "B", "text": "Sympathetic dominance is necessary to maximize nutrient absorption in the ileum."}, {"key": "C", "text": "Nerve endings in the brush border are the primary site of zinc and magnesium absorption."}, {"key": "D", "text": "The enteric nervous system produces the majority of the body's digestive enzymes."}], "answer": "A", "rationale": "Vagal tone is required to stimulate the cephalic phase of digestion and endogenous secretions. The parasympathetic nervous system (via the vagus nerve) triggers the release of HCl, bile, and enzymes; without it, 'Replacing' is only a temporary fix.", "caseContext": null}, {"id": 28, "question": "In the context of the 'Replace' phase, which physiological finding would make the use of Bitter Herbs a more appropriate first-line choice than Betaine HCl for a patient with upper GI distress?", "options": [{"key": "A", "text": "The patient reports symptoms appearing 2-3 hours after a meal."}, {"key": "B", "text": "The patient is currently taking high-dose pancreatic enzymes."}, {"key": "C", "text": "The patient has confirmed achlorhydria via a Heidelberg capsule test."}, {"key": "D", "text": "The patient has a history of active peptic ulcers or severe gastritis."}], "answer": "D", "rationale": "The patient has a history of active peptic ulcers or severe gastritis. Bitters stimulate endogenous secretions via the cephalic phase without the direct corrosive risk of supplemental acid in a damaged mucosal lining. A is not quite correct since late-onset symptoms are more indicative of lower GI issues or SIBO rather than the immediate acid- dependent phase of digestion.", "caseContext": null}, {"id": 29, "question": "A patient presents with a 'High-Normal' Fecal Calprotectin (e.g., 45 μg/g) and chronic joint pain. Within the DIGIN framework, why might this result still warrant an investigation into the 'I' (Intestinal Permeability) node?", "options": [{"key": "A", "text": "Low-grade mucosal inflammation can still drive systemic 'leaky gut' and antigen trafficking even if it's below the clinical cutoff for IBD."}, {"key": "B", "text": "Calprotectin levels are inversely proportional to intestinal permeability."}, {"key": "C", "text": "A value of 45 μg/g confirms the presence of Crohn's disease."}, {"key": "D", "text": "Calprotectin is a specific marker for paracellular transport proteins."}], "answer": "A", "rationale": "Low-grade mucosal inflammation can still drive systemic 'leaky gut' and antigen trafficking even if it's below the clinical cutoff for IBD. Functional medicine often views borderline markers as indicative of early-stage dysfunction or subclinical inflammation.", "caseContext": null}, {"id": 30, "question": "During the 'Repair' phase, how does the mechanism of action of DGL (Deglycyrrhizinated Licorice) differ from that of L-Glutamine?", "options": [{"key": "A", "text": "DGL acts as a prebiotic for the microbiome, while L-Glutamine acts as an antimicrobial."}, {"key": "B", "text": "DGL increases cortisol to reduce inflammation, while L-Glutamine decreases it."}, {"key": "C", "text": "L-Glutamine is used for the stomach, while DGL is used only for the colon."}, {"key": "D", "text": "DGL supports the gastric mucous barrier and cell longevity, while L-Glutamine provides fuel for enterocyte regeneration."}], "answer": "D", "rationale": "DGL supports the gastric mucous barrier and cell longevity, while L-Glutamine provides fuel for enterocyte regeneration. One focuses on the protective coating, the other on the cellular 'building blocks' themselves. DGL is primarily focused on the protective mucus layer and epithelial life-span, whereas glutamine is the primary nitrogen source for rapidly dividing gut cells.", "caseContext": null}, {"id": 31, "question": "What is the primary rationale for addressing the 'N' (Nervous System) node before or alongside the 'Remove' phase in a patient with recurrent SIBO?", "options": [{"key": "A", "text": "Nervous system support is required to kill Gram-negative bacteria directly."}, {"key": "B", "text": "The 'N' node controls the pH of the small intestine, which kills the bacteria."}, {"key": "C", "text": "Stress management prevents the bacteria from consuming hydrogen gas."}, {"key": "D", "text": "To restore the Migrating Motor Complex (MMC) function, which is necessary to prevent immediate re- colonization."}], "answer": "D", "rationale": "To restore the Migrating Motor Complex (MMC) function, which is necessary to prevent immediate re-colonization. Without the 'cleansing wave' provided by the MMC (vagal-mediated), bacteria will likely return shortly after antimicrobial treatment ends.", "caseContext": null}, {"id": 32, "question": "In a patient with chronic 'G' (Gut Microbiota) dysbiosis and high Fecal Beta-glucuronidase, which dietary strategy would most logically support the elimination of de-conjugated toxins?", "options": [{"key": "A", "text": "Increasing Calcium-D-Glutarate and cruciferous vegetables."}, {"key": "B", "text": "Adopting a low-residue, low-fiber diet to slow down transit."}, {"key": "C", "text": "Increasing simple sugars to feed the beneficial bacteria."}, {"key": "D", "text": "Restricting all protein to reduce nitrogenous waste."}], "answer": "A", "rationale": "Increasing Calcium-D-Glutarate and cruciferous vegetables. Calcium-D-Glucarate directly inhibits the beta-glucuronidase enzyme, while cruciferous veggies support the initial Phase II conjugation.", "caseContext": null}, {"id": 33, "question": "A patient has low Pancreatic Elastase-1 and low fecal sIgA. Within the 5R program, how does this combination impact the 'Reinoculate' phase?", "options": [{"key": "A", "text": "Probiotics should only be given if sIgA is high to ensure they are 'tagged' by the immune system."}, {"key": "B", "text": "The lack of enzymes and low mucosal immunity may make it harder for beneficial probiotics to survive and colonize without parallel 'Replace' and 'Repair' support."}, {"key": "C", "text": "Low sIgA means probiotics will grow too fast and cause SIBO."}, {"key": "D", "text": "Pancreatic enzymes are toxic to Bifidobacteria."}], "answer": "B", "rationale": "The lack of enzymes and low mucosal immunity may make it harder for beneficial probiotics to survive and colonize without parallel 'Replace' and 'Repair' support. Think about the 'environment' or 'soil' in which you are trying to plant the 'seeds' (probiotics). Successful colonization requires a hospitable environment; undigested food and low sIgA (poor defense) create an environment of inflammation/ dysbiosis.", "caseContext": null}, {"id": 34, "question": "Which of the following is a key 'Rebalance' clinical pearl for patients with 'D' (Digestion) issues related to the cephalic phase?", "options": [{"key": "A", "text": "Drinking large amounts of water during the meal to dilute the gastric juices."}, {"key": "B", "text": "Avoiding all fats to prevent the need for bile secretion."}, {"key": "C", "text": "Practicing mindful eating and thorough chewing to trigger the vagal-mediated release of HCl and enzymes."}, {"key": "D", "text": "Taking a cold shower immediately after eating to stimulate the sympathetic nervous system."}], "answer": "C", "rationale": "Practicing mindful eating and thorough chewing to trigger the vagal-mediated release of HCl and enzymes. The cephalic phase of digestion begins in the brain and is transmitted via the vagus nerve before food even hits the stomach.", "caseContext": null}, {"id": 35, "question": "What is the primary role of the 'Inflammasome' (e.g., NLRP3) within the innate immune response?", "options": [{"key": "A", "text": "To produce specific IgG antibodies against viral antigens."}, {"key": "B", "text": "To act as a protein complex that triggers the maturation of pro-inflammatory cytokines like IL-1beta."}, {"key": "C", "text": "To inhibit the translocation of NF-kappaB into the nucleus."}, {"key": "D", "text": "To repair the basement membrane of the intestinal mucosa."}], "answer": "B", "rationale": "To act as a protein complex that triggers the maturation of pro-inflammatory cytokines like IL-1beta. The inflammasome processes inactive precursors into active cytokines in response to 'danger signals'.", "caseContext": null}, {"id": 36, "question": "A patient with systemic inflammation exhibits a high AA:EPA ratio. Beyond increasing fish oil, which dietary strategy is most effective for shifting the eicosanoid balance by limiting the pool of available pro-inflammatory precursors?", "options": [{"key": "A", "text": "Increasing intake of nightshade vegetables to support immune diversity."}, {"key": "B", "text": "Consuming high amounts of alpha-linolenic acid (ALA) from flaxseed only."}, {"key": "C", "text": "Reducing the intake of grain-fed meats and commercial vegetable oils."}, {"key": "D", "text": "Switching from saturated fats to hydrogenated margarines."}], "answer": "C", "rationale": "Reducing the intake of grain-fed meats and commercial vegetable oils. Grain-fed meats and commercial vegetable oils are the primary exogenous sources of Arachidonic Acid and its precursor, Linoleic Acid.", "caseContext": null}, {"id": 37, "question": "In a patient with 'Th17-dominant' autoimmunity, which nutrient deficiency would most likely exacerbate the condition by failing to stabilize T-regulatory (Treg) cells?", "options": [{"key": "A", "text": "Vitamin D"}, {"key": "B", "text": "Calcium"}, {"key": "C", "text": "Vitamin K2"}, {"key": "D", "text": "Iodine"}], "answer": "A", "rationale": "Vitamin D Vitamin D is critical for the differentiation of Treg cells which help maintain self-tolerance and suppress Th17 activity. This nutrient acts more like a hormone and has significant genomic effects on immune cell maturation.", "caseContext": null}, {"id": 38, "question": "A patient presents with 'Sickness Behavior' including social withdrawal and lethargy despite no visible infection. Which biochemical pathway explains this systemic effect?", "options": [{"key": "A", "text": "Excessive production of Serotonin in the gut lumen."}, {"key": "B", "text": "Suppression of NF-kappaB in the hypothalamus."}, {"key": "C", "text": "Direct inhibition of the HPA axis by dietary saturated fats."}, {"key": "D", "text": "Increased production of peripheral cytokines that signal the brain via the vagus nerve."}], "answer": "D", "rationale": "Increased production of peripheral cytokines that signal the brain via the vagus nerve. Peripheral inflammation communicates with the CNS to induce behavioral changes designed to conserve energy for healing.", "caseContext": null}, {"id": 39, "question": "When assessing the 'Total Load' of a patient with chronic fatigue, you find evidence of reactivated Epstein- Barr Virus (EBV). How should this be classified on the IFM Matrix?", "options": [{"key": "A", "text": "Trigger"}, {"key": "B", "text": "Antecedent"}, {"key": "C", "text": "Structural Integrity"}, {"key": "D", "text": "Assimilation"}], "answer": "A", "rationale": "Trigger A viral reactivation acts as a discrete event that initiates or maintains the current immune response.", "caseContext": null}, {"id": 40, "question": "In the 'Case Management of Allergic Disease,' why is identifying 'Hypochlorhydria' considered a priority 'Antecedent'?", "options": [{"key": "A", "text": "Hypochlorhydria directly inhibits the production of IgE antibodies."}, {"key": "B", "text": "Low stomach acid prevents the breakdown of proteins into non-allergenic amino acids."}, {"key": "C", "text": "Stomach acid is required to activate the Th2 immune response."}, {"key": "D", "text": "Low acid increases the absorption of Vitamin C, which stabilizes mast cells."}], "answer": "B", "rationale": "Low stomach acid prevents the breakdown of proteins into non-allergenic amino acids. Large, undigested protein fragments are more likely to be recognized as antigens by the Gut- Associated Lymphoid Tissue (GALT).", "caseContext": null}, {"id": 41, "question": "Which botanical acts as a 'dual inhibitor' by targeting both the 5-Lipoxygenase (5-LOX) enzyme and the NF- kappaB signaling pathway?", "options": [{"key": "A", "text": "Valerian Root"}, {"key": "B", "text": "Milk Thistle"}, {"key": "C", "text": "Boswellia serrata"}, {"key": "D", "text": "Echinacea purpurea"}], "answer": "C", "rationale": "Boswellia serrata Boswellic acids are unique in their ability to inhibit 5-LOX and prevent the translocation of NF- kappaB into the nucleus. This is a botanical frequently used for joint health and inflammatory bowel conditions.", "caseContext": null}, {"id": 42, "question": "A patient with Hashimoto's Thyroiditis continues to have high antibody titers despite a gluten-free diet. Based on the concept of 'molecular mimicry,' which other food protein is most commonly cross-reactive?", "options": [{"key": "A", "text": "Rice (Oryzenin)"}, {"key": "B", "text": "Dairy (Casein)"}, {"key": "C", "text": "Broccoli (Sulforaphane)"}, {"key": "D", "text": "Leafy Greens (Chlorophyll)"}], "answer": "B", "rationale": "Dairy (Casein) Casein shares structural similarities with gluten and thyroid tissue, often leading to continued immune activation in sensitive patients.", "caseContext": null}, {"id": 43, "question": "A patient with a high intake of vegetable oils and commercial poultry presents with elevated markers of inflammation. Which specific nutrient, when supplemented, acts to competitively inhibit the Delta-5-desaturase enzyme to reduce the production of series-4 leukotrienes?", "options": [{"key": "A", "text": "Oleic acid"}, {"key": "B", "text": "Alpha-linolenic acid (ALA)"}, {"key": "C", "text": "Eicosapentaenoic acid (EPA)"}, {"key": "D", "text": "Gamma-linolenic acid (GLA)"}], "answer": "C", "rationale": "Eicosapentaenoic acid (EP A) Think about the omega-3 fatty acid that prevents the 'shunting' of DGLA toward the pro- inflammatory series-2 prostaglandins. EPA acts as a competitive inhibitor of the enzyme that converts Dihomo-gamma-linolenic acid (DGLA) into pro-inflammatory Arachidonic Acid (AA).", "caseContext": null}, {"id": 44, "question": "Which set of conditions is most accurately categorized as 'Auto-inflammatory,' characterized by innate immune system dysfunction rather than adaptive immune auto-antibodies?", "options": [{"key": "A", "text": "Familial Mediterranean Fever and Gout"}, {"key": "B", "text": "Rheumatoid Arthritis and Systemic Lupus Erythematosus"}, {"key": "C", "text": "Hashimoto’s Thyroiditis and Celiac Disease"}, {"key": "D", "text": "Type 1 Diabetes and Multiple Sclerosis"}], "answer": "A", "rationale": "Familial Mediterranean Fever and Gout These conditions are driven by over-activation of the inflammasome (NLRP3) and IL-1beta production within the innate immune system.", "caseContext": null}, {"id": 45, "question": "A patient with systemic inflammation and joint pain shows a deficiency in Secretory IgA (sIgA). According to the Immune APM, this finding most directly reflects a failure in which part of the immune system?", "options": [{"key": "A", "text": "Cell-mediated Th1 response"}, {"key": "B", "text": "Systemic humoral immunity"}, {"key": "C", "text": "Th17/Treg balance"}, {"key": "D", "text": "Innate mucosal defense"}], "answer": "D", "rationale": "Innate mucosal defense sIgA is the primary immunoglobulin of the mucosal surfaces and represents the first line of innate-associated defense in the gut.", "caseContext": null}, {"id": 46, "question": "In the 'Working Upstream' model, which molecular complex must be phosphorylated and degraded to allow NF-kappaB to enter the nucleus and initiate transcription of pro-inflammatory cytokines?", "options": [{"key": "A", "text": "JAK-STAT complex"}, {"key": "B", "text": "Cyclooxygenase-2 (COX-2)"}, {"key": "C", "text": "IkappaB (IkB)"}, {"key": "D", "text": "NLRP3 Inflammasome"}], "answer": "C", "rationale": "IkappaB (IkB) This 'inhibitor' must be removed before the transcription factor can act on the DNA. IkB acts as an inhibitory chaperone that keeps NF-kappaB sequestered in the cytoplasm until it is degraded.", "caseContext": null}, {"id": 47, "question": "A practitioner is assessing 'Total Load' in a patient with chronic fatigue. The presence of high levels of Arabinose on an Organic Acid Test (OAT) suggests that which trigger is contributing to the patient's immune activation?", "options": [{"key": "A", "text": "Heavy Metal Toxicity"}, {"key": "B", "text": "Candida albicans overgrowth"}, {"key": "C", "text": "Lyme Borreliosis"}, {"key": "D", "text": "Environmental Mycotoxins"}], "answer": "B", "rationale": "Candida albicans overgrowth Arabinose is a sugar alcohol produced by the fermentation of yeast/fungi like Candida in the gastrointestinal tract. Candida is a common fungal organism that can lead to 'brain fog' and systemic inflammation.", "caseContext": null}, {"id": 48, "question": "Which biomarker is considered a superior indicator of chronic, low-grade systemic inflammation compared to standard CRP because it can detect levels below 3.0 mg/L?", "options": [{"key": "A", "text": "Interleukin-6 (IL-6)"}, {"key": "B", "text": "Erythrocyte Sedimentation Rate (ESR)"}, {"key": "C", "text": "High-sensitivity CRP (hs-CRP)"}, {"key": "D", "text": "Fibrinogen"}], "answer": "C", "rationale": "High-sensitivity CRP (hs-CRP) hs-CRP uses more sensitive assays to measure low-level inflammation that standard CRP tests might miss. This test is frequently used in cardiovascular risk assessment to find inflammation in 'healthy' appearing individuals.", "caseContext": null}, {"id": 49, "question": "When addressing a patient with 'Total Load' issues, why is it vital to identify and treat a 'hidden' Stachybotrys exposure in a patient already being treated for Lyme disease?", "options": [{"key": "A", "text": "Mold exposure lowers the levels of IgG, making Lyme testing impossible."}, {"key": "B", "text": "Mold acts as a persistent trigger that keeps the innate immune system in a state of SIRS."}, {"key": "C", "text": "Mold toxins directly inhibit the absorption of antibiotics used for Lyme."}, {"key": "D", "text": "Stachybotrys and Borrelia are genetically identical organisms."}], "answer": "B", "rationale": "Mold acts as a persistent trigger that keeps the innate immune system in a state of SIRS. Cumulative triggers prevent the immune system from successfully resolving any single infection, keeping the inflammatory 'bucket' full.", "caseContext": null}, {"id": 50, "question": "Which dietary 'pseudo-allergen' is frequently associated with the clinical 'triad' of asthma, nasal polyps, and chronic rhinosinusitis, even when IgE testing is negative?", "options": [{"key": "A", "text": "Oxalates"}, {"key": "B", "text": "Lactose"}, {"key": "C", "text": "Salicylates"}, {"key": "D", "text": "Histamine"}], "answer": "C", "rationale": "Salicylates Salicylate intolerance can trigger leukotriene-mediated respiratory symptoms and is often associated with nasal polyps. This compound is found in many fruits, vegetables, and aspirin.", "caseContext": null}, {"id": 51, "question": "The presence of 'Gum Disease' is categorized as a source of dysfunction in which part of the IFM Cardiometabolic Matrix?", "options": [{"key": "A", "text": "Transport"}, {"key": "B", "text": "Structural Integrity"}, {"key": "C", "text": "Defense & Repair"}, {"key": "D", "text": "Biotransformation"}], "answer": "C", "rationale": "Defense & Repair The Matrix lists chronic infections, specifically dental/gum disease, under the Defense & Repair node as a driver of systemic inflammation.", "caseContext": null}, {"id": 52, "question": "According to the IFM Clinical Decision Tree, what is the '1º Treatment' priority for all cardiometabolic risk patterns?", "options": [{"key": "A", "text": "Advanced Laboratory testing (CAC/CIMT)"}, {"key": "B", "text": "Targeted Phyto-nutritional supplementation"}, {"key": "C", "text": "Modifiable Lifestyle Factors (MLF)"}, {"key": "D", "text": "Red Flag referrals"}], "answer": "C", "rationale": "Modifiable Lifestyle Factors (MLF) The Decision Tree mandates starting with MLF (Sleep, Movement, Nutrition, etc.) as the primary (1º) intervention for all patterns.", "caseContext": null}, {"id": 53, "question": "In the context of 'Vascular/Endothelial Function,' which physical assessment finding is considered a clinical indicator of peripheral vascular disease?", "options": [{"key": "A", "text": "High MCV"}, {"key": "B", "text": "Ankle-Brachial Index (ABI)"}, {"key": "C", "text": "Acanthosis Nigricans"}, {"key": "D", "text": "Heart Rate Variability (HRV)"}], "answer": "B", "rationale": "Ankle-Brachial Index (ABI) The A:B Index is explicitly listed in the Clinical Decision Tree as a key indicator for peripheral artery/vascular disease. This measurement compares blood pressure at the ankle and the arm.", "caseContext": null}, {"id": 54, "question": "A patient's lab report shows an elevated GGT and ALT. According to the IFM 'Gather' phase, which physiological risk pattern should the practitioner investigate first?", "options": [{"key": "A", "text": "Lipid Burden"}, {"key": "B", "text": "Coagulation"}, {"key": "C", "text": "Immune & Toxic Burden"}, {"key": "D", "text": "Metabolic Function"}], "answer": "D", "rationale": "Metabolic Function Elevated GGT and ALT are specific biomarkers listed under the Metabolic Function risk pattern, often indicating NAFLD or insulin resistance.", "caseContext": null}, {"id": 55, "question": "According to the Decision Tree, which biomarker is a primary (1º) diagnostic indicator for the 'Coagulation' risk pattern?", "options": [{"key": "A", "text": "Homocysteine"}, {"key": "B", "text": "Fasting Glucose"}, {"key": "C", "text": "Myeloperoxidase (MPO)"}, {"key": "D", "text": "Lp-PLA2"}], "answer": "A", "rationale": "Homocysteine Homocysteine is a key laboratory marker for the Coagulation pattern and often signals a need for B-vitamin support. This marker is often elevated in patients with a history of thrombosis or miscarriage.", "caseContext": null}, {"id": 56, "question": "A patient with the APOE 4 allele is being treated. Which '2º Treatment' strategy is specifically prioritized for this genotype to manage Lipid Burden?", "options": [{"key": "A", "text": "Restrict saturated fats and alcohol"}, {"key": "B", "text": "Prioritize a high-sodium DASH diet"}, {"key": "C", "text": "Increase intake of red yeast rice"}, {"key": "D", "text": "Supplement with high-dose Niacin (B3)"}], "answer": "A", "rationale": "Restrict saturated fats and alcohol APOE 4 carriers are genetically sensitive to saturated fats and alcohol, which can significantly drive up LDL-C and particle count. The term “secondary treatment” in this question is being used to describe the APOE4-specific precision branch of the IFM decision tree, rather than the universal foundational interventions that apply to all patients. In the IFM framework, foundational lifestyle strategies (sleep, exercise, glycemic balance, overall nutrition) are considered the universal first-line tier. Once APOE4 is identified, the decision tree then moves into a genotype-specific secondary branch, where the priority becomes interventions uniquely important for APOE4 carriers. Within that branch, restricting saturated fats and alcohol is the specifically prioritized strategy, because APOE4 carriers tend to have a disproportionate rise in LDL-C and particle number in response to these exposures. Some can reason that lifestyle is a “primary treatment” but this question is specifically asking about the secondary precision-treatment branch after genotype identification.", "caseContext": null}, {"id": 57, "question": "When organizing a patient's story, where should 'Chronic Stress' be placed if it is currently driving hyperinsulinemia and visceral adiposity?", "options": [{"key": "A", "text": "Mediators/Perpetuators"}, {"key": "B", "text": "Triggering Events"}, {"key": "C", "text": "Antecedents"}, {"key": "D", "text": "Structural Integrity"}], "answer": "A", "rationale": "Mediators/Perpetuators Mediators or perpetuators are ongoing factors that sustain a disease process, like chronic stress driving insulin resistance.", "caseContext": null}, {"id": 58, "question": "Which clinical assessment tool is specifically mentioned in the 'Gather' phase to identify Peripheral Artery Disease?", "options": [{"key": "A", "text": "Ankle-Brachial Index (ABI)"}, {"key": "B", "text": "Pulse-Oximetry (P-O2)"}, {"key": "C", "text": "Waist-to-Hip Ratio (WHR)"}, {"key": "D", "text": "Heart Rate Variability (HRV)"}], "answer": "A", "rationale": "Ankle-Brachial Index (ABI) The ABI is the primary tool listed in the Decision Tree for gathering evidence of peripheral vascular disease. This test compares the blood pressure measured at your ankle with the blood pressure measured at your arm.", "caseContext": null}, {"id": 59, "question": "In the IFM Matrix, 'Lipotoxicity' and 'Mitochondropathies' are dysfunctions grouped under which node?", "options": [{"key": "A", "text": "Assimilation"}, {"key": "B", "text": "Biotransformation"}, {"key": "C", "text": "Energy"}, {"key": "D", "text": "Transport"}], "answer": "C", "rationale": "Energy The Energy node manages cellular metabolism, including mitochondrial health and the consequences of calorie excess (lipotoxicity).", "caseContext": null}, {"id": 60, "question": "A patient taking a chronic NSAID or COX-2 inhibitor should have which risk pattern evaluated due to potential GI and inflammatory burden?", "options": [{"key": "A", "text": "Immune & Toxic Burden"}, {"key": "B", "text": "Metabolic Function"}, {"key": "C", "text": "Coagulation"}, {"key": "D", "text": "Autonomic Function"}], "answer": "A", "rationale": "Immune & Toxic Burden Chronic NSAID use is explicitly listed as a risk factor under the Immune & Toxic Burden pattern.", "caseContext": null}, {"id": 61, "question": "Which laboratory marker is identified as a 'COULD Know' test that tracks vascular wall inflammation and plaque instability?", "options": [{"key": "A", "text": "Fasting Insulin"}, {"key": "B", "text": "Lp-PLA2 (PLAC test)"}, {"key": "C", "text": "HbA1c"}, {"key": "D", "text": "Lipid Panel (Standard)"}], "answer": "B", "rationale": "Lp-PLA2 (PLAC test) Lp-PLA2 is categorized as an advanced 'COULD Know' lab that provides specific information on plaque rupture risk. This enzyme is produced by inflammatory cells in the vascular wall. This is not part of the basic lab tests.", "caseContext": null}, {"id": 62, "question": "In the IFM framework, what is the '2º Treatment' for a patient with a Coagulation pattern imbalance and high homocysteine?", "options": [{"key": "A", "text": "Omega-3 (EPA/DHA)"}, {"key": "B", "text": "Magnesium and Arginine"}, {"key": "C", "text": "Curcumin and Probiotics"}, {"key": "D", "text": "B6, B12, and Folate"}], "answer": "D", "rationale": "B6, B12, and Folate The 2º Treatment for the Coagulation pattern specifically targets homocysteine reduction using methylated B-vitamins. These B vitamins are cofactors for the enzymes that recycle homocysteine.", "caseContext": null}, {"id": 63, "question": "A patient's lab results show elevated ESR, high homocysteine, and an increased MCV . According to the IFM Cardiometabolic Risk Patterns, which pattern is the primary concern?", "options": [{"key": "A", "text": "Metabolic Function"}, {"key": "B", "text": "Immune & Toxic Burden"}, {"key": "C", "text": "Lipid Burden"}, {"key": "D", "text": "Coagulation"}], "answer": "D", "rationale": "Coagulation This pattern focuses on factors that increase the risk of thrombosis and includes methylation- related markers. The Coagulation risk pattern specifically includes elevated ESR, MCV , and homocysteine as key diagnostic laboratory markers.", "caseContext": null}, {"id": 64, "question": "In the IFM Cardiometabolic Matrix, where is 'TMAO' (Trimethylamine N-oxide) categorized to reflect its origin in the gut microbiome?", "options": [{"key": "A", "text": "Biotransformation"}, {"key": "B", "text": "Defense & Repair"}, {"key": "C", "text": "Assimilation"}, {"key": "D", "text": "Transport"}], "answer": "C", "rationale": "Assimilation TMAO production is directly linked to gut dysbiosis and the metabolism of dietary precursors by intestinal bacteria. TMAO (Trimethylamine N-oxide) is a compound made by gut bacteria from nutrients (choline, L-carnitine) found in red meat, eggs, and dairy, linked to increased heart disease risk, stroke, and diabetes by promoting plaque, inflammation, and cholesterol buildup in arteries.", "caseContext": null}, {"id": 65, "question": "Which of the following is categorized as a 'Triggering Event' in the Cardiometabolic Matrix, often initiating the progression of vascular disease?", "options": [{"key": "A", "text": "APOE 4 Status"}, {"key": "B", "text": "Infection or Dysbiosis"}, {"key": "C", "text": "Family History of CVD"}, {"key": "D", "text": "Hyperinsulinemia"}], "answer": "B", "rationale": "Infection or Dysbiosis Triggering events are discrete incidents like infections or acute toxic exposures that set off a cascade of physiological imbalances.", "caseContext": null}, {"id": 66, "question": "A patient presenting with symptoms of 'Anxiety' and 'Depression' alongside 'Arrhythmias' should be evaluated for which risk pattern?", "options": [{"key": "A", "text": "Autonomic"}, {"key": "B", "text": "Vascular/Endothelial Function"}, {"key": "C", "text": "Coagulation"}, {"key": "D", "text": "Metabolic Function"}], "answer": "A", "rationale": "Autonomic This pattern relates to the body's stress response system and the HPA axis. The Autonomic risk pattern includes mental/ emotional symptoms like anxiety and depression alongside cardiac rhythm issues like arrhythmias.", "caseContext": null}, {"id": 67, "question": "A patient's lab report shows a 'Crash' pattern: high morning cortisol followed by a steep drop to below-normal levels by noon. According to the module, this pattern is highly suggestive of:", "options": [{"key": "A", "text": "Excessive evening cortisol output driving morning exhaustion."}, {"key": "B", "text": "Stage 1 (Arousal) where the body is in a constant state of high output."}, {"key": "C", "text": "A failure of the negative feedback loop in the hippocampus."}, {"key": "D", "text": "Hyper-conversion of T4 to T3 in the morning hours"}], "answer": "C", "rationale": "A failure of the negative feedback loop in the hippocampus. While the hippocampus is involved in feedback, the 'Crash' pattern specifically describes the adrenal gland's inability to sustain output after a morning surge.", "caseContext": null}, {"id": 68, "question": "Which of the following describes the 'unidirectional' nature of the steroidogenic pathway?", "options": [{"key": "A", "text": "The body removes carbons during synthesis but lacks the enzymes to add them back."}, {"key": "B", "text": "Once cortisol is formed, it can never be converted into inactive cortisone."}, {"key": "C", "text": "Steroid hormones can only travel from the gland to the target cell, never back."}, {"key": "D", "text": "Hormones can only be synthesized from LDL, never from acetate."}], "answer": "A", "rationale": "The body removes carbons during synthesis but lacks the enzymes to add them back. The pathway is unidirectional because the enzymatic steps involve decreasing carbon counts (e.g., C27 to C21) which cannot be reversed.", "caseContext": null}, {"id": 69, "question": "A patient with Hashimoto's is following a gluten-free diet but still has elevated TPO antibodies. Which underlying clinical 'block' should be investigated according to the module's target for optimal conversion?", "options": [{"key": "A", "text": "Zinc intake exceeding 15 mg/day"}, {"key": "B", "text": "TSH levels residing in the 0.4 to 2.5 mIU/L range"}, {"key": "C", "text": "Consumption of cooked cruciferous vegetables"}, {"key": "D", "text": "Ferritin levels below 100 ng/mL"}], "answer": "D", "rationale": "Ferritin levels below 100 ng/mL The module identifies a Ferritin target of 100 ng/mL as critical for the iron-dependent enzymes required for thyroid hormone synthesis and conversion. A is not quite correct since although Zinc is necessary for thyroid function; the module only warns against doses exceeding 50 mg/day due to copper metabolism issues.", "caseContext": null}, {"id": 70, "question": "Regarding iodine monitoring, the module recommends a specific target for first morning urinary iodine excretion. What is this range?", "options": [{"key": "A", "text": "10 - 50 mcg/L"}, {"key": "B", "text": "Less than 50 mcg/L"}, {"key": "C", "text": "Greater than 500 mcg/L"}, {"key": "D", "text": "100 - 300 mcg/L"}], "answer": "D", "rationale": "100 - 300 mcg/L This is the specific range recommended in the module for monitoring iodine status and ensuring adequate substrate without toxicity. This target ensures there is enough 'raw material' for T4 synthesis while avoiding the risks of excess.", "caseContext": null}, {"id": 71, "question": "A 42-year-old female presents with low libido, fatigue, and high systemic inflammation. Labs reveal normal Pregnenolone but significantly low DHEA and Testosterone. Based on the steroidogenic pathway, which enzymatic activity is being inhibited by her inflammatory state?", "options": [{"key": "A", "text": "5-alpha-reductase"}, {"key": "B", "text": "17,20-lyase"}, {"key": "C", "text": "3-beta-HSD"}, {"key": "D", "text": "Aromatase"}], "answer": "B", "rationale": "17,20-lyase Inflammation and stress specifically downregulate 17,20-lyase, preventing the conversion of precursors into androgens, a process central to the 'cortisol steal.'", "caseContext": null}, {"id": 72, "question": "When addressing a patient with both significant HPA axis dysfunction and hypothyroidism, why does the hormone hierarchy mandate supporting the adrenals first?", "options": [{"key": "A", "text": "Thyroid hormone replacement will cause an immediate and permanent inhibition of ACTH."}, {"key": "B", "text": "Adrenal glandulars provide the selenium necessary for the thyroid to function."}, {"key": "C", "text": "Thyroid hormone increases metabolic demand, which can overwhelm inadequate adrenal reserves."}, {"key": "D", "text": "Cortisol is required as a direct substrate for the synthesis of T4 in the thyroid gland."}], "answer": "C", "rationale": "Thyroid hormone increases metabolic demand, which can overwhelm inadequate adrenal reserves. Revving up metabolism with thyroid hormone without adequate cortisol to support the increased cellular activity can trigger an adrenal 'crash.'", "caseContext": null}, {"id": 73, "question": "An elderly patient presents with a TSH of 0.3 mIU/L but is asymptomatic for hyperthyroidism. According to the module, what is the most appropriate next step?", "options": [{"key": "A", "text": "Prescribe high-dose Iodine to suppress further TSH production."}, {"key": "B", "text": "Increase the dose of their current Levothyroxine if they are already on therapy."}, {"key": "C", "text": "Immediately prescribe methimazole to prevent atrial fibrillation."}, {"key": "D", "text": "Check Free T3 and Free T4 to rule out a protective adaptation to aging."}], "answer": "D", "rationale": "Check Free T3 and Free T4 to rule out a protective adaptation to aging. In the elderly, a lower TSH may be a physiological adaptation to protect the heart; it should not be treated based on TSH alone.", "caseContext": null}, {"id": 74, "question": "A patient with high systemic inflammation shows a high Reverse T3 (rT3) level. What is the biochemical mechanism by which inflammation drives this 'shunt'?", "options": [{"key": "A", "text": "Decreased production of Thyroid Binding Globulin (TBG)."}, {"key": "B", "text": "Stimulation of Thyroid Peroxidase (TPO)."}, {"key": "C", "text": "Inhibition of the 5'-deiodinase enzyme."}, {"key": "D", "text": "Increased iodine uptake by the sodium-iodide symporter."}], "answer": "C", "rationale": "Inhibition of the 5'-deiodinase enzyme. Inflammation inhibits 5'-deiodinase (which makes T3) and may favor 5-deiodinase, which converts T4 into the inactive rT3.", "caseContext": null}, {"id": 75, "question": "Which physical finding is most strongly associated with the 'Exhaustion' stage of HPA axis dysfunction, where vascular tone can no longer be maintained?", "options": [{"key": "A", "text": "A drop in systolic BP of 10 mmHg or more upon standing (Ragland’s sign)."}, {"key": "B", "text": "The presence of 'Sergant's white line' after stroking the skin."}, {"key": "C", "text": "Hyperreflexia of the patellar tendon."}, {"key": "D", "text": "Exophthalmos (bulging eyes)."}], "answer": "A", "rationale": "A drop in systolic BP of 10 mmHg or more upon standing (Ragland’ s sign). This indicates a failure of the adrenal-mediated sympathetic response to maintain blood pressure against gravity, typical of Stage 3.", "caseContext": null}, {"id": 76, "question": "In the 'Matrix Web,' how does insulin resistance clinically impact the presentation of female patients regarding their androgen levels?", "options": [{"key": "A", "text": "It stimulates the production of TSH, which in turn inhibits testosterone."}, {"key": "B", "text": "It increases SHBG, leading to a functional deficiency of androgens."}, {"key": "C", "text": "It decreases SHBG and upregulates 5-alpha-reductase."}, {"key": "D", "text": "It causes a direct conversion of Progesterone into DHEA."}], "answer": "C", "rationale": "It decreases SHBG and upregulates 5-alpha-reductase. Lower SHBG increases free hormone levels, while 5-alpha reductase increases the conversion to more potent DHT, leading to symptoms like PCOS. These factors increase the 'availability' and ‘potency' of testosterone.", "caseContext": null}, {"id": 77, "question": "A patient following a strict vegan diet for 5 years presents with thinning hair, cold extremities, and a TSH of 3.2. If their TPO antibodies are negative, which nutrient assessment is most critical according to the module?", "options": [{"key": "A", "text": "Magnesium"}, {"key": "B", "text": "Vitamin C"}, {"key": "C", "text": "Calcium"}, {"key": "D", "text": "Ferritin"}], "answer": "D", "rationale": "Ferritin Iron (Ferritin) is essential for thyroid hormone production and conversion; the module recommends a target of 100 ng/mL for optimal function. This mineral is a frequent deficiency in plant-based diets and is required for TPO enzyme activity.", "caseContext": null}, {"id": 78, "question": "A 4-point salivary cortisol test shows the 'Crash' pattern (high morning, very low mid-day/evening). What is the primary clinical goal when using Phosphatidylserine in this specific case?", "options": [{"key": "A", "text": "To provide a substrate for the synthesis of DHEA."}, {"key": "B", "text": "To stimulate mid-day cortisol production."}, {"key": "C", "text": "To blunt the excessive morning cortisol surge."}, {"key": "D", "text": "To increase the conversion of Cortisone back to Cortisol."}], "answer": "C", "rationale": "To blunt the excessive morning cortisol surge. Phosphatidylserine helps modulate the HPA axis and can be used to lower elevated cortisol at specific times of the day, such as a morning surge.", "caseContext": null}, {"id": 79, "question": "Regarding 'Ragland’s Sign' and 'Rogoff’s Sign,' which of the following correctly distinguishes these two physical exam findings?", "options": [{"key": "A", "text": "Ragland’s is a sign of hyperthyroidism; Rogoff’s is a sign of PCOS."}, {"key": "B", "text": "Ragland’s measures pupil dilation; Rogoff’s measures thyroid size."}, {"key": "C", "text": "Ragland’s measures orthostatic BP; Rogoff’s measures adrenal tenderness."}, {"key": "D", "text": "Ragland’s indicates high DHEA; Rogoff’s indicates high Cortisol."}], "answer": "C", "rationale": "Ragland’ s measures orthostatic BP; Rogoff’ s measures adrenal tenderness. Ragland’s is the drop in BP upon standing (Stage 3 indicator), while Rogoff’s is tenderness over the adrenal area with pressure.", "caseContext": null}, {"id": 80, "question": "Why is LDL cholesterol monitoring particularly relevant for an 'over-athletic' patient presenting with symptoms of multiple hormone deficiencies?", "options": [{"key": "A", "text": "LDL is the primary carrier protein for Thyroid Binding Globulin."}, {"key": "B", "text": "High LDL inhibits the conversion of T4 to T3."}, {"key": "C", "text": "Low LDL stimulates aromatase, leading to estrogen dominance."}, {"key": "D", "text": "LDL provides the required cholesterol substrate for all steroid hormone synthesis."}], "answer": "D", "rationale": "LDL provides the required cholesterol substrate for all steroid hormone synthesis. If LDL is too low (common in over-training/malnutrition), the body lacks the raw materials to produce pregnenolone and subsequent hormones.", "caseContext": null}, {"id": 81, "question": "A patient with chronic inflammatory bowel disease presents with low Free T3 and high Reverse T3 (rT3), but a normal TSH. Which specific 'STAAAINS' factor is most likely driving this peripheral conversion shunt?", "options": [{"key": "A", "text": "Stomach Acid (hypochlorhydia)"}, {"key": "B", "text": "Systemic Inflammation"}, {"key": "C", "text": "Toxic Exposure (Halogens)"}, {"key": "D", "text": "Nutrient Deficiency (Iodine)"}], "answer": "B", "rationale": "Systemic Inflammation Inflammatory cytokines are known to inhibit 5'-deiodinase activity, favoring the production of the inactive rT3 over active T3.", "caseContext": null}, {"id": 82, "question": "When managing a patient in Stage 2 (Adaptation) of HPA axis dysfunction who has elevated evening cortisol and low DHEA, what is the primary clinical rationale for using a 'calming' adaptogen like Ashwagandha in the evening?", "options": [{"key": "A", "text": "To increase the sensitivity of the hippocampal glucocorticoid receptors"}, {"key": "B", "text": "To reduce the evening cortisol surge and support the circadian rhythm"}, {"key": "C", "text": "To directly stimulate the adrenal cortex to produce more DHEA"}, {"key": "D", "text": "To inhibit the 11-beta-HSD enzyme in the kidneys"}], "answer": "B", "rationale": "To reduce the evening cortisol surge and support the circadian rhythm Ashwagandha acts as a calming adaptogen that helps modulate the HPA axis to lower inappropriate cortisol elevations at night.", "caseContext": null}, {"id": 83, "question": "Which specific urinary metabolite finding would most strongly confirm that a patient's 'hypocortisol' symptoms are due to rapid clearance (metabolism) rather than low adrenal production?", "options": [{"key": "A", "text": "Low levels of DHEA-S in the morning"}, {"key": "B", "text": "Low free cortisol with high total metabolized cortisol"}, {"key": "C", "text": "Low free cortisol with low total metabolized cortisol"}, {"key": "D", "text": "An elevated THF/THE ratio"}], "answer": "B", "rationale": "Low free cortisol with high total metabolized cortisol High levels of metabolized cortisol in the presence of low free cortisol suggest the adrenals are producing hormone but the body is clearing it too quickly.", "caseContext": null}, {"id": 84, "question": "In a female patient with 'Androgen Dominance,' how does the supplement Spearmint Tea specifically assist in the clinical protocol?", "options": [{"key": "A", "text": "It induces the CYP3A4 enzyme to clear estrogen faster."}, {"key": "B", "text": "It acts as a precursor to progesterone production in the adrenals."}, {"key": "C", "text": "It inhibits the COMT enzyme to prolong the effect of healthy estrogens."}, {"key": "D", "text": "It has anti-androgenic properties that can lower free testosterone levels in women with PCOS."}], "answer": "D", "rationale": "It has anti-androgenic properties that can lower free testosterone levels in women with PCOS. Clinical trials have shown that spearmint tea can lower androgen levels and improve hirsutism in women.", "caseContext": null}, {"id": 85, "question": "Which specific physiological 'trigger' causes the 'Window of Opportunity' to close, making late-start HRT (15+ years post-menopause) risky?", "options": [{"key": "A", "text": "A permanent shift in the liver's production of SHBG."}, {"key": "B", "text": "The total depletion of the primordial follicle pool in the ovaries."}, {"key": "C", "text": "The transition of the vascular endothelium from a 'healthy' state to one with established, unstable plaque."}, {"key": "D", "text": "The down-regulation of Estrogen Receptor Beta (ERβ) in the brain."}], "answer": "C", "rationale": "The transition of the vascular endothelium from a 'healthy' state to one with established, unstable plaque. Estrogen is protective to healthy vessels but can promote inflammation and matrix metalloproteinase activity in diseased vessels. As women age and/or there is an estrogen deficiency, the vasoprotective effects of estrogen diminish.", "caseContext": null}, {"id": 86, "question": "In the 'Hormone Hierarchy,' what is the primary reason the 'Insulin' level must be addressed before the 'Sex Steroid' level?", "options": [{"key": "A", "text": "Insulin prevents the liver from metabolizing progesterone"}, {"key": "B", "text": "Sex hormones cannot bind to receptors in the absence of insulin"}, {"key": "C", "text": "Insulin is the precursor molecule to all steroid hormones"}, {"key": "D", "text": "High insulin up-regulates aromatase and down-regulates SHBG"}], "answer": "D", "rationale": "High insulin up-regulates aromatase and down-regulates SHBG Insulin directly alters the availability and conversion of sex hormones, making TRT or HRT ineffective or 'messy' if insulin is high.", "caseContext": null}, {"id": 87, "question": "Which 'Toxin' is specifically categorized as a 'Metallooestrogen' because it mimics estrogen at the receptor level without being a steroid?", "options": [{"key": "A", "text": "Phthalates"}, {"key": "B", "text": "Cadmium"}, {"key": "C", "text": "Glyphosate"}, {"key": "D", "text": "BPA (Bisphenol A)"}], "answer": "B", "rationale": "Cadmium Cadmium is a heavy metal (found in cigarettes and some foods) that can bind and activate estrogen receptor alpha.", "caseContext": null}, {"id": 88, "question": "According to the 'Navigating Perimenopause' lecture, why is the 'withdrawal' of estrogen sometimes more clinically significant than the absolute level of estrogen?", "options": [{"key": "A", "text": "Withdrawal prevents the liver from producing albumin"}, {"key": "B", "text": "Withdrawal increases the risk of bone fractures more than low levels"}, {"key": "C", "text": "Fluctuating levels destabilize the thermoregulatory center in the hypothalamus"}, {"key": "D", "text": "Only withdrawal can cause endometrial thickening"}], "answer": "C", "rationale": "Fluctuating levels destabilize the thermoregulatory center in the hypothalamus The hypothalamus reacts to the change in estrogen levels, which is why 'hot flashes' occur even when E2 labs appear normal.", "caseContext": null}, {"id": 89, "question": "A male patient presents with 'Low T' symptoms, but his labs show normal Total Testosterone and very high SHBG. According to the Hormone Hierarchy, which underlying issue should be investigated as a primary driver of elevated SHBG?", "options": [{"key": "A", "text": "Liver dysfunction or hyperthyroidism"}, {"key": "B", "text": "Vitamin D deficiency"}, {"key": "C", "text": "Excessive intake of dietary fiber"}, {"key": "D", "text": "Hyperinsulinemia"}], "answer": "A", "rationale": "Liver dysfunction or hyperthyroidism SHBG is produced in the liver and is significantly increased by thyroid hormone excess or liver stress, effectively lowering the bioavailable free testosterone.", "caseContext": null}, {"id": 90, "question": "When addressing Phase 1 estrogen metabolism, the '2:16' ratio is a key biomarker. Which specific clinical risk increases when the 16alpha-OH-E1 pathway dominates?", "options": [{"key": "A", "text": "Rapid clearance of estrogen leading to withdrawal symptoms"}, {"key": "B", "text": "Increased risk of proliferative conditions like breast cysts and heavy menses"}, {"key": "C", "text": "Suppression of the HPA axis"}, {"key": "D", "text": "Increased risk of osteoporosis due to low estrogenic activity"}], "answer": "B", "rationale": "Increased risk of proliferative conditions like breast cysts and heavy menses The 16-alpha-hydroxy pathway produces a potent, long-acting estrogen that strongly stimulates tissue growth.", "caseContext": null}, {"id": 91, "question": "A woman on BHRT has a Dutch test showing low COMT activity and high levels of catechol estrogens (2-OH and 4-OH). Which specific nutrient, besides Magnesium, is the universal methyl donor required for this Phase 2 step?", "options": [{"key": "A", "text": "S-Adenosylmethionine (SAMe)"}, {"key": "B", "text": "Alpha-Lipoic Acid"}, {"key": "C", "text": "Vitamin C"}, {"key": "D", "text": "Vitamin A"}], "answer": "A", "rationale": "S-Adenosylmethionine (SAMe) SAMe is the primary methyl group donor that COMT utilizes to convert reactive catechols into stable methoxyestrogens.", "caseContext": null}, {"id": 92, "question": "How does chronic 'Sleep' deprivation specifically increase the risk of Estrogen Dominance?", "options": [{"key": "A", "text": "Inhibition of the gallbladder"}, {"key": "B", "text": "Increased production of SHBG"}, {"key": "C", "text": "Direct stimulation of the CYP1B1 enzyme"}, {"key": "D", "text": "Reduction in melatonin, which normally acts as a natural aromatase inhibitor"}], "answer": "D", "rationale": "Reduction in melatonin, which normally acts as a natural aromatase inhibitor Melatonin is shown to modulate the aromatase enzyme, so its absence leads to higher conversion of androgens to estrogens. It is a hormonal 'nightly' antioxidant that influences how we convert testosterone to estrogen.", "caseContext": null}, {"id": 93, "question": "In the 'Evaluating Men' lecture, why is a high 'Ferritin' level considered a 'Red Flag' before starting TRT?", "options": [{"key": "A", "text": "High ferritin indicates a 'Phase 3' clearance bottleneck"}, {"key": "B", "text": "Iron overload can cause oxidative damage to the pituitary, leading to secondary hypogonadism"}, {"key": "C", "text": "Iron directly competes with testosterone for binding on SHBG"}, {"key": "D", "text": "It suggests the patient is at high risk for prostate cancer"}], "answer": "B", "rationale": "Iron overload can cause oxidative damage to the pituitary, leading to secondary hypogonadism Hemochromatosis is a classic cause of secondary hypogonadism, and adding TRT without addressing iron can worsen systemic oxidation.", "caseContext": null}, {"id": 94, "question": "A 50-year-old woman is placed in the 'Yellow Risk' category for HRT due to a BMI of 32 and mild metabolic syndrome. Why is 'Transdermal Estradiol' mandatory for this patient?", "options": [{"key": "A", "text": "It prevents the conversion of estradiol into estrone"}, {"key": "B", "text": "It is the only way to ensure the 'Window of Opportunity' remains open"}, {"key": "C", "text": "It avoids stimulating hepatic production of clotting factors and CRP"}, {"key": "D", "text": "It provides higher systemic levels than oral dosing"}], "answer": "C", "rationale": "It avoids stimulating hepatic production of clotting factors and CRP Transdermal delivery bypasses the liver's 'first-pass,' preventing the increase in inflammatory markers and thrombosis risk associated with oral estrogen.", "caseContext": null}, {"id": 95, "question": "A DUTCH test shows a patient has high 4-OH-E1 and high levels of '8-OHdG.' What does the presence of 8- OHdG signify in this clinical context?", "options": [{"key": "A", "text": "A deficiency in Phase 3 gut clearance"}, {"key": "B", "text": "Active oxidative stress and DNA damage, likely from catechol estrogen quinones"}, {"key": "C", "text": "Optimal methylation capacity"}, {"key": "D", "text": "High progesterone receptor sensitivity"}], "answer": "B", "rationale": "Active oxidative stress and DNA damage, likely from catechol estrogen quinones 8-OHdG (8-hydroxy-2'-deoxyguanosine) is a biomarker that measures the level of oxidative damage specifically to the guanine bases of DNA, often resulting when 4-OH estrogens are not methylated and become reactive.", "caseContext": null}, {"id": 96, "question": "According to the 'Navigating Perimenopause' lecture, why is 'Cyclic' Progesterone (days 14-28) often used even if a woman is still having regular periods?", "options": [{"key": "A", "text": "To suppress FSH and stop the transition to menopause"}, {"key": "B", "text": "To induce a heavy bleed and clear out fibroids"}, {"key": "C", "text": "To compensate for the 'Anovulatory' cycles common in perimenopause where a corpus luteum is not formed"}, {"key": "D", "text": "To lower insulin levels and prevent weight gain"}], "answer": "C", "rationale": "To compensate for the 'Anovulatory' cycles common in perimenopause where a corpus luteum is not formed In perimenopause, a woman may bleed but not ovulate, leading to an absence of the natural progesterone 'peak' in the second half of the month.", "caseContext": null}, {"id": 97, "question": "Which specific 'Toxin' is known to interfere with the 'StAR' protein, thereby blocking the rate-limiting step of testosterone production in the testes?", "options": [{"key": "A", "text": "Mycotoxins"}, {"key": "B", "text": "Glyphosate"}, {"key": "C", "text": "Phthalates"}, {"key": "D", "text": "Fluoride"}], "answer": "C", "rationale": "Phthalates Phthalates are well-documented endocrine disruptors that specifically target the StAR protein in Leydig cells, inhibiting the entry of cholesterol into the mitochondria.", "caseContext": null}, {"id": 98, "question": "A patient's DUTCH test shows high 4-OH-E1 and a low Methylation Activity ratio. Which specific combination of supplements best addresses both the toxic metabolite production and the bottleneck in clearance?", "options": [{"key": "A", "text": "N-Acetyl Cysteine and Magnesium"}, {"key": "B", "text": "DIM and I3C"}, {"key": "C", "text": "Calcium D-Glucarate and Fiber"}, {"key": "D", "text": "Saw Palmetto and Zinc"}], "answer": "A", "rationale": "N-Acetyl Cysteine and Magnesium NAC helps neutralize reactive quinones formed from 4-OH, while Magnesium is a critical cofactor for the COMT enzyme to drive methylation.", "caseContext": null}, {"id": 99, "question": "A male patient has high Total Testosterone but a very high SHBG. Which condition is a common metabolic driver for this elevated 'capture' protein?", "options": [{"key": "A", "text": "High intake of saturated fats"}, {"key": "B", "text": "Hyperinsulinemia"}, {"key": "C", "text": "Vitamin D deficiency"}, {"key": "D", "text": "Liver dysfunction or hyperthyroidism"}], "answer": "D", "rationale": "Liver dysfunction or hyperthyroidism The liver produces SHBG, and its production is stimulated by thyroid hormone and inhibited by insulin.", "caseContext": null}, {"id": 100, "question": "A male patient presents with Low T and high levels of Phthalates in his 'Toxins' (PTSD) assessment. What is the mechanism of this endocrine disruption?", "options": [{"key": "A", "text": "They convert Testosterone into Progesterone."}, {"key": "B", "text": "They act as anti-androgens by blocking the androgen receptor."}, {"key": "C", "text": "They stimulate the StAR protein to overproduce cortisol."}, {"key": "D", "text": "They increase the production of LH from the pituitary."}], "answer": "B", "rationale": "They act as anti-androgens by blocking the androgen receptor. Phthalates are known to interfere with testosterone synthesis and block receptor sites, mimicking a deficiency state.", "caseContext": null}, {"id": 101, "question": "Which physical exam finding is specifically associated with marginal Zinc status?", "options": [{"key": "A", "text": "Spoon-shaped nails (koilonychia)"}, {"key": "B", "text": "Angular stomatitis"}, {"key": "C", "text": "Leukonychia (white spots on nails)"}, {"key": "D", "text": "Burton’s lines"}], "answer": "C", "rationale": "Leukonychia (white spots on nails) Leukonychia is listed alongside a positive zinc taste test and dermatitis as a clinical indicator of low zinc.", "caseContext": null}, {"id": 102, "question": "Which mineral is required for the function of all Cytochrome P450 (CYP450) enzymes?", "options": [{"key": "A", "text": "Iron"}, {"key": "B", "text": "Selenium"}, {"key": "C", "text": "Zinc"}, {"key": "D", "text": "Magnesium"}], "answer": "A", "rationale": "Iron The module explicitly states that iron is required for all CYP450 enzymes, which metabolize about 75% of drugs.", "caseContext": null}, {"id": 103, "question": "In a patient with a 'Sluggish' Phase II Glucuronidation pathway, which dietary intervention would be most targeted to inhibit the enzyme beta-glucuronidase in the gut?", "options": [{"key": "A", "text": "Increasing dietary intake of soluble fiber only"}, {"key": "B", "text": "Supplementation with Calcium D-glucarate"}, {"key": "C", "text": "Increased intake of Sulforaphane from broccoli sprouts"}, {"key": "D", "text": "High doses of N-acetylcysteine"}], "answer": "B", "rationale": "Supplementation with Calcium D-glucarate Calcium D-glucarate metabolizes into compounds that inhibit beta-glucuronidase, preventing the 'un-pairing' of toxins in the gut. It is derived from a substance found in apples, grapefruit, and cruciferous vegetables that directly blocks 'de- conjugation'.", "caseContext": null}, {"id": 104, "question": "Which nutrient is a critical cofactor for the enzyme Sulfotransferase (SULT) and is often depleted by high doses of acetaminophen?", "options": [{"key": "A", "text": "Vitamin B12"}, {"key": "B", "text": "Vitamin K"}, {"key": "C", "text": "Magnesium"}, {"key": "D", "text": "Sulfate or Sulfur-containing amino acids"}], "answer": "D", "rationale": "Sulfate or Sulfur-containing amino acids Sulfation (Phase II) requires inorganic sulfate, often derived from cysteine and methionine, which is depleted by acetaminophen metabolism.", "caseContext": null}, {"id": 105, "question": "Which specific mechanism explains why lipophilic toxins like organochlorine pesticides are particularly hazardous during rapid weight loss?", "options": [{"key": "A", "text": "Weight loss reduces the availability of bile acids needed for toxin excretion."}, {"key": "B", "text": "Adipose tissue acts as a temporary reservoir, and rapid mobilization increases the 'unbound' systemic toxic load."}, {"key": "C", "text": "Rapid fat loss causes an immediate down-regulation of Phase II enzymes."}, {"key": "D", "text": "Lipophilic toxins are converted into water-soluble pro-carcinogens within the adipose tissue."}], "answer": "B", "rationale": "Adipose tissue acts as a temporary reservoir, and rapid mobilization increases the 'unbound' systemic toxic load. When fat is burned, the lipophilic toxins stored within are released into the bloodstream, potentially overwhelming the liver's biotransformation capacity.", "caseContext": null}, {"id": 106, "question": "A patient is found to have elevated urinary 8-hydroxy-2'-deoxyguanosine (8-OHdG). What does this specific biomarker indicate regarding the patient's toxic burden?", "options": [{"key": "A", "text": "Inhibition of the Methylation pathway by heavy metals"}, {"key": "B", "text": "A deficiency in the Amino Acid Conjugation pathway"}, {"key": "C", "text": "Oxidative damage to DNA caused by environmental stressors"}, {"key": "D", "text": "Acute exposure to organophosphate pesticides"}], "answer": "C", "rationale": "Oxidative damage to DNA caused by environmental stressors 8-OHdG is a widely used biomarker for assessing systemic oxidative stress and DNA base damage, often induced by toxins.", "caseContext": null}, {"id": 107, "question": "Which of the following nutrients is considered a 'Methyl donor' that can help support the detoxification of arsenic and estrogens?", "options": [{"key": "A", "text": "Magnesium"}, {"key": "B", "text": "Selenium"}, {"key": "C", "text": "Vitamin C"}, {"key": "D", "text": "Trimethylglycine (Betaine)"}], "answer": "D", "rationale": "Trimethylglycine (Betaine) Betaine (TMG) provides methyl groups to the methionine cycle, supporting the production of SAMe for detoxification.", "caseContext": null}, {"id": 108, "question": "In the IFM model, why is the 'Medical Symptom Questionnaire' (MSQ) used repeatedly throughout a detoxification program?", "options": [{"key": "A", "text": "To determine which specific Phase I enzymes are up-regulated."}, {"key": "B", "text": "To bill the insurance company for a higher level of complexity."}, {"key": "C", "text": "To provide a definitive diagnosis of heavy metal poisoning."}, {"key": "D", "text": "To track the 'total symptom burden' and the clinical response to the intervention over time."}], "answer": "D", "rationale": "To track the 'total symptom burden' and the clinical response to the intervention over time. The MSQ allows the practitioner to quantify improvements in multi-system symptoms as the toxic load is reduced.", "caseContext": null}, {"id": 109, "question": "Which of the following is the most appropriate 'first step' when a practitioner suspects a patient is highly toxic but also severely undernourished?", "options": [{"key": "A", "text": "Focus on nutrient repletion and phytonutrient support to build 'detox capacity' first."}, {"key": "B", "text": "Initiate a zero-calorie water fast to force the toxins out of adipose tissue."}, {"key": "C", "text": "Immediately start a high-dose heavy metal chelation protocol."}, {"key": "D", "text": "Order a 24-hour provoked urine test to identify the specific toxins."}], "answer": "A", "rationale": "Focus on nutrient repletion and phytonutrient support to build 'detox capacity' first. The PURE model prioritizes 'Undernourished' first to ensure the liver and gut have the necessary tools for safe biotransformation.", "caseContext": null}, {"id": 110, "question": "A patient presents with a dark blue line along the margin of the gums. This physical finding, known as a 'Burton line,' is a classic indicator of which toxic exposure?", "options": [{"key": "A", "text": "Cadmium"}, {"key": "B", "text": "Arsenic"}, {"key": "C", "text": "Mercury"}, {"key": "D", "text": "Lead"}], "answer": "D", "rationale": "Lead A lead line (Burton line) is a clinical sign of chronic lead poisoning caused by a reaction between circulating lead and bacteria in the mouth. This metal is also associated with 'Basophilic Stippling' on a blood smear. Mercury toxicity often causes tremors or emotional changes but does not typically manifest as a blue gingival line.", "caseContext": null}, {"id": 111, "question": "What is the primary purpose of the 'Elimination Diet' in an environmental health clinical plan?", "options": [{"key": "A", "text": "To ensure the patient is only eating 'green' foods for chelation."}, {"key": "B", "text": "To bypass the need for any Phase II conjugation enzymes."}, {"key": "C", "text": "To reduce the total caloric intake for weight loss."}, {"key": "D", "text": "To identify food-based triggers and reduce the 'total load' on the immune and detox systems."}], "answer": "D", "rationale": "To identify food-based triggers and reduce the 'total load' on the immune and detox systems. Removing common allergens and processed foods helps lower inflammation, allowing the liver to focus on processing environmental toxins.", "caseContext": null}, {"id": 112, "question": "Which of these is a simple lifestyle recommendation to 'Reduce Exposure' to endocrine-disrupting phthalates?", "options": [{"key": "A", "text": "Using old, scratched non-stick pans for all cooking."}, {"key": "B", "text": "Eating only charbroiled meats instead of boiled meats."}, {"key": "C", "text": "Switching from plastic water bottles to glass or stainless steel."}, {"key": "D", "text": "Increasing the use of scented air fresheners in the home."}], "answer": "C", "rationale": "Switching from plastic water bottles to glass or stainless steel. Phthalates are plasticizers that can leach into water and food, especially when heated or stored in soft plastics.", "caseContext": null}, {"id": 113, "question": "If Gamma-Glutamyl Transpeptidase (GGT) is found in the 'high-normal' range (e.g., 25-35 U/L), what is the functional medicine interpretation?", "options": [{"key": "A", "text": "It is a sign of acute viral hepatitis."}, {"key": "B", "text": "It is perfectly healthy as long as it is below the lab's upper limit."}, {"key": "C", "text": "It suggests the patient is drinking too much water."}, {"key": "D", "text": "It may indicate an early depletion of glutathione due to environmental toxic load."}], "answer": "D", "rationale": "It may indicate an early depletion of glutathione due to environmental toxic load. Higher GGT levels, even within the lab's normal range, are associated with increased oxidative stress and exposure to pollutants. Consider GGT as a 'smoke alarm' for glutathione turnover.", "caseContext": null}, {"id": 114, "question": "Which Phase II pathway is most dependent on the availability of the amino acid Glycine?", "options": [{"key": "A", "text": "Amino Acid Conjugation"}, {"key": "B", "text": "Glucuronidation"}, {"key": "C", "text": "Sulfoxidation"}, {"key": "D", "text": "Methylation"}], "answer": "A", "rationale": "Amino Acid Conjugation Glycine is the most common amino acid used in this pathway to conjugate organic acids and certain drugs for excretion.", "caseContext": null}, {"id": 115, "question": "A patient who is 'Highly Sensitive' to perfumes, cleaning products, and exhaust fumes is demonstrating a pattern most consistent with:", "options": [{"key": "A", "text": "A simple case of seasonal hay fever."}, {"key": "B", "text": "Toxicant-Induced Loss of Tolerance."}, {"key": "C", "text": "Type 1 IgE-mediated allergy."}, {"key": "D", "text": "A deficiency in Vitamin D."}], "answer": "B", "rationale": "Toxicant-Induced Loss of Tolerance. TILT describes the phenomenon where a person becomes symptomatic from very low levels of diverse environmental chemicals.", "caseContext": null}, {"id": 116, "question": "Which of the following describes the role of fiber (such as that found in the 'Detox Food Plan') in environmental health?", "options": [{"key": "A", "text": "Fiber directly kills the bacteria that produce beta-glucuronidase."}, {"key": "B", "text": "Fiber acts as a 'trap' to bind toxins in the gut and prevent their reabsorption."}, {"key": "C", "text": "Fiber speeds up Phase I oxidation reactions."}, {"key": "D", "text": "Fiber is the primary cofactor for the CYP450 enzymes."}], "answer": "B", "rationale": "Fiber acts as a 'trap' to bind toxins in the gut and prevent their reabsorption. Fiber binds to bile acids and toxins that the liver has dumped into the intestines, ensuring they leave the body.", "caseContext": null}, {"id": 117, "question": "Which biomarker is categorized as a measure of 'Damaged Proteins' in the evaluation of oxidative stress?", "options": [{"key": "A", "text": "3-Nitrotyrosine"}, {"key": "B", "text": "F2 Isoprostanes"}, {"key": "C", "text": "Hemoglobin A1c"}, {"key": "D", "text": "8-OH Deoxyguanosine"}], "answer": "A", "rationale": "3-Nitrotyrosine This marker specifically reflects the nitration of protein residues, indicating damage caused by reactive nitrogen species (RNS).", "caseContext": null}, {"id": 118, "question": "Which 'Hormetic Therapy' utilizes environmental stressors to induce mitochondrial biogenesis and resilience?", "options": [{"key": "A", "text": "Cold and Heat exposure"}, {"key": "B", "text": "Oral Phosphatidylcholine"}, {"key": "C", "text": "Intranasal Glutathione"}, {"key": "D", "text": "High-dose Vitamin C IV"}], "answer": "A", "rationale": "Cold and Heat exposure Temperature extremes (thermogenesis) are listed as hormetic therapies that challenge mitochondria to improve efficiency and density.", "caseContext": null}, {"id": 119, "question": "What is the recommended dosage range for Phosphatidylcholine (PC) when used for '1º Oral Lipid Support' of mitochondrial membranes?", "options": [{"key": "A", "text": "50 – 500 milligrams per day"}, {"key": "B", "text": "1 – 10 grams per day"}, {"key": "C", "text": "10 – 20 grams per day"}, {"key": "D", "text": "400 – 1000 IU per day"}], "answer": "B", "rationale": "1 – 10 grams per day The module specifies 1–10g as the therapeutic window for oral lipid replacement to restore membrane integrity.", "caseContext": null}, {"id": 120, "question": "Which master regulator is induced by phytochemicals like sulforaphane and curcumin to activate the 'Antioxidant Response Element' (ARE)?", "options": [{"key": "A", "text": "mTOR"}, {"key": "B", "text": "NRF-2"}, {"key": "C", "text": "NF-kB"}, {"key": "D", "text": "HIF-1alpha"}], "answer": "B", "rationale": "NRF-2 NRF-2 is the master transcription factor that, when activated by phytochemicals, enters the nucleus to turn on antioxidant and detox genes. HIF-1alpha responds specifically to low oxygen (hypoxia) rather than being the general regulator of the antioxidant response.", "caseContext": null}, {"id": 121, "question": "In the 'Four Ingredients of a Healing Encounter,' why is providing an 'EXPLANATION' for a patient's symptoms considered therapeutic?", "options": [{"key": "A", "text": "It establishes the practitioner's intellectual superiority."}, {"key": "B", "text": "It creates an 'Emotionally Charged Relationship'."}, {"key": "C", "text": "It provides the patient with a sense of 'Control' over their situation."}, {"key": "D", "text": "It ensures the patient will comply with the 'Ritual' of treatment."}], "answer": "C", "rationale": "It provides the patient with a sense of 'Control' over their situation. Understanding the 'why' behind symptoms reduces the fear of the unknown, which is a major component of the healing process. This is the antidote to learned helplessness.", "caseContext": null}, {"id": 122, "question": "According to the IFM Bioenergetics Clinical Decision Tree, which secondary (2º) metabolism diagnostic test should be considered specifically to evaluate cellular redox potential if primary interventions are insufficient?", "options": [{"key": "A", "text": "Thyroid Stimulating Hormone (TSH)"}, {"key": "B", "text": "Complete Blood Count (CBC)"}, {"key": "C", "text": "Lactate-to-Pyruvate (L:P) ratio"}, {"key": "D", "text": "Homocysteine levels"}], "answer": "C", "rationale": "Lactate-to-Pyruvate (L:P) ratio The L:P ratio is listed as a 2º Metabolism Diagnostic used to assess mitochondrial redox status and the efficiency of the NAD+/NADH balance. This test looks at the balance between the end- product of glycolysis and its reduced counterpart.", "caseContext": null}, {"id": 123, "question": "The module describes a 'feed-forward cycle' of oxidative stress. Which of the following is identified as a trigger that specifically increases Nitric Oxide (NO) and subsequent cellular damage?", "options": [{"key": "A", "text": "Caloric Excess"}, {"key": "B", "text": "Increased HRV (Heart Rate Variability)"}, {"key": "C", "text": "Elevated Magnesium intake"}, {"key": "D", "text": "High Dietary Fiber"}], "answer": "A", "rationale": "Caloric Excess Caloric excess is explicitly listed as a cause of increased oxidative stress and NO production, fueling the damaging feed- forward cycle.", "caseContext": null}, {"id": 124, "question": "When supporting mitochondrial biogenesis through 'Hormetic Therapies,' which combination of environmental factors is most emphasized in the module's diagrams?", "options": [{"key": "A", "text": "Radiation, Xenobiotics, and Mycotoxins"}, {"key": "B", "text": "Stretching, Massage, and Ultrasound"}, {"key": "C", "text": "Glucose, Fructose, and Galactose"}, {"key": "D", "text": "Cold, Heat, Light, and Oxygen"}], "answer": "D", "rationale": "Cold, Heat, Light, and Oxygen The four 'Bio-hacking' elements", "caseContext": null}, {"id": 125, "question": "In the IFM Fatigue Matrix, which clinical indicator of 'Energy' dysregulation is specifically associated with Statin use?", "options": [{"key": "A", "text": "Hyperglycemia"}, {"key": "B", "text": "Iron Deficiency Anemia"}, {"key": "C", "text": "Vitamin B12 deficiency"}, {"key": "D", "text": "CoQ10 deficiency"}], "answer": "D", "rationale": "CoQ10 deficiency Statins inhibit the HMG-CoA reductase pathway, which is the same pathway responsible for the endogenous synthesis of Coenzyme Q10.", "caseContext": null}, {"id": 126, "question": "Which set of cofactors is specifically required by the enzyme Catalase to neutralize Hydrogen Peroxide?", "options": [{"key": "A", "text": "Iron (Fe)"}, {"key": "B", "text": "Selenium (Se)"}, {"key": "C", "text": "Zinc (Zn) and Copper (Cu)"}, {"key": "D", "text": "Manganese (Mn)"}], "answer": "A", "rationale": "Iron (Fe) The module identifies Iron as the primary metallic cofactor required for Catalase activity to convert H2O2 into water and oxygen.", "caseContext": null}, {"id": 127, "question": "A patient with suspected 'Secondary Mitochondrial Dysfunction' presents with neurodegenerative symptoms. Which clinical indicator under the 'Neurologic' section of the decision tree would justify a referral for Neuro- Psych testing?", "options": [{"key": "A", "text": "Peripheral Neuropathy alone"}, {"key": "B", "text": "Cognitive Decline and Depression"}, {"key": "C", "text": "History of Sleep Apnea"}, {"key": "D", "text": "Tachycardia and POTS"}], "answer": "B", "rationale": "Cognitive Decline and Depression The decision tree specifically lists depression, neurodegeneration, and cognitive decline as indicators for advanced Neuro- Psych questionnaires and testing.", "caseContext": null}, {"id": 128, "question": "According to the Module 8 clinical considerations for Chronic Pain, how does 'Learned Helplessness' impact the Bioenergetics matrix?", "options": [{"key": "A", "text": "It acts as a Mental/Emotional mediator under the 'Retelling the Patient's Story' section, potentially perpetuating energy failure."}, {"key": "B", "text": "It causes the over-expression of Heme Biosynthesis enzymes."}, {"key": "C", "text": "It directly inhibits Complex IV of the Electron Transport Chain via cortisol spikes."}, {"key": "D", "text": "It is a primary 'Triggering Event' like head trauma or infection."}], "answer": "A", "rationale": "It acts as a Mental/Emotional mediator under the 'Retelling the Patient's Story' section, potentially perpetuating energy failure. Learned helplessness is listed as a Mental/Emotional factor that can act as a mediator or perpetuator of clinical imbalances in the Fatigue Matrix.", "caseContext": null}, {"id": 129, "question": "Which specific biochemical 'feed-forward cycle' is triggered by caloric excess, leading to increased Nitric Oxide (NO) and subsequent mitochondrial damage?", "options": [{"key": "A", "text": "The Methionine Cycle"}, {"key": "B", "text": "The Citric Acid Cycle"}, {"key": "C", "text": "The Urea Cycle"}, {"key": "D", "text": "Oxidative Stress cycle"}], "answer": "D", "rationale": "Oxidative Stress cycle Caloric excess is identified as a primary trigger that increases oxidative stress, which in turn boosts NO and TNF-alpha, perpetuating a damaging cycle. B is not correct since the Citric Acid Cycle is the productive metabolic pathway for ATP; while it uses calories, it is not the damaging 'feed-forward' cycle described in the context of caloric excess.", "caseContext": null}, {"id": 130, "question": "According to the IFM Bioenergetics Clinical Decision Tree, which biomarker is used to assess 'Damaged Sugars' within the 1º Oxidative Stress diagnostics?", "options": [{"key": "A", "text": "3-nitrotyrosine"}, {"key": "B", "text": "F2 Isoprostanes"}, {"key": "C", "text": "HgbA1c and AGEs"}, {"key": "D", "text": "8-OH deoxyguanosine"}], "answer": "C", "rationale": "HgbA1c and AGEs Hemoglobin A1c and Advanced Glycation End-products (AGEs) are the specific evaluations listed for identifying damaged sugars.", "caseContext": null}, {"id": 131, "question": "Which set of nutrients is categorized specifically as 'Energy Transporters' within the mitochondrial energy production framework?", "options": [{"key": "A", "text": "Vitamin D and Magnesium"}, {"key": "B", "text": "Niacin (B3) and Riboflavin (B2)"}, {"key": "C", "text": "Thiamine (B1) and Pantothenic Acid (B5)"}, {"key": "D", "text": "Folate and Vitamin B12"}], "answer": "B", "rationale": "Niacin (B3) and Riboflavin (B2) B2 and B3 are explicitly listed as the nutrients critical for energy transport in the form of FAD and NAD.", "caseContext": null}, {"id": 132, "question": "Which 2º (Secondary) Metabolism Treatment is indicated for a patient with persistent mitochondrial dysfunction to support methylation and 'rescue' choline for membrane integrity?", "options": [{"key": "A", "text": "Magnesium Chelate"}, {"key": "B", "text": "Alpha-Lipoic Acid (ALA)"}, {"key": "C", "text": "Coenzyme Q10"}, {"key": "D", "text": "SAM-e (S-adenosylmethionine)"}], "answer": "D", "rationale": "SAM-e (S-adenosylmethionine) SAM-e is a 2º metabolism treatment that supports the production of glutathione and preserves choline for phosphatidylcholine (PC) synthesis. This molecule is the body's universal methyl donor. Case Study 1 — Answer Key", "caseContext": null}, {"id": 133, "question": "Elena’s history of teenage antibiotic use is best categorized as a:", "options": [{"key": "A", "text": "Mediator/Perpetuator"}, {"key": "B", "text": "Triggering Event"}, {"key": "C", "text": "Genetic Antecedent"}], "answer": "B", "rationale": "Triggering Event Antibiotics often trigger dysbiosis, a common starting point in a GI timeline.", "caseContext": "Case Study 1: The GI-Immune Connection. Questions 133-146\nPatient Profile: Elena, 28, presents with chronic bloating, alternating constipation/diarrhea, and \"brain fog.\" She\nhas a history of multiple rounds of antibiotics for acne as a teenager.\nLabs: Positive for IgA Tissue Transglutaminase (tTG-IgA); High Fecal Calprotectin; Low Serum B12.\nClinical Indicators: Geographic tongue; brittle nails."}, {"id": 134, "question": "The positive tTG-IgA and low B12 suggest dysfunction primarily in which Matrix node?", "options": [{"key": "A", "text": "Assimilation"}, {"key": "B", "text": "Structural Integrity"}, {"key": "C", "text": "Transport"}], "answer": "A", "rationale": "Assimilation Celiac disease and B12 deficiency are failures of Digestion/Absorption (Assimilation).", "caseContext": null}, {"id": 135, "question": "What is the gold standard \"Next Best Step\" for a patient with positive tTG-IgA and high suspicion of Celiac disease?", "options": [{"key": "A", "text": "Immediate strict gluten-free diet"}, {"key": "B", "text": "Referral for small bowel biopsy"}, {"key": "C", "text": "Food sensitivity testing (IgG)"}], "answer": "B", "rationale": "Referral for small bowel biopsy To confirm Celiac, a biopsy is the \"Gold Standard.\" It must be done while consuming gluten; going gluten-free prematurely can cause a false-negative biopsy.", "caseContext": null}, {"id": 136, "question": "Elena’s \"Geographic tongue\" is a clinical indicator for a deficiency in which node?", "options": [{"key": "A", "text": "Communication"}, {"key": "B", "text": "Assimilation"}, {"key": "C", "text": "Energy"}], "answer": "B", "rationale": "Assimilation Geographic tongue and brittle nails are \"Clinical Indicators\" of micronutrient malabsorption (B- vitamins, Iron, Zinc) within the Assimilation node.", "caseContext": null}, {"id": 137, "question": "Using the 5R Framework, what is the \"Remove\" priority for Elena?", "options": [{"key": "A", "text": "Remove probiotics"}, {"key": "B", "text": "Remove gluten and potentially pathogenic microbes"}, {"key": "C", "text": "Remove exercise"}], "answer": "B", "rationale": "Remove gluten and potentially pathogenic microbes In the 5R program, \"Remove\" refers to pathogens, allergens, and triggers. For Elena, this means removing gluten and potentially addressing microbial overgrowth.", "caseContext": null}, {"id": 138, "question": "High Fecal Calprotectin is a biomarker for which functional imbalance?", "options": [{"key": "A", "text": "Intestinal inflammation"}, {"key": "B", "text": "Low pancreatic enzymes"}, {"key": "C", "text": "SIBO"}], "answer": "A", "rationale": "Intestinal inflammation Calprotectin is a protein found in neutrophils; its presence in stool indicates active white blood cell migration to the gut, a hallmark of the Defense & Repair node imbalance.", "caseContext": null}, {"id": 139, "question": "Elena’s brain fog may be mediated by \"Metabolic Endotoxemia.\" This involves:", "options": [{"key": "A", "text": "LPS (Lipopolysaccharide) crossing the gut barrier into systemic circulation"}, {"key": "B", "text": "High levels of Vitamin D"}, {"key": "C", "text": "Excessive fiber intake"}], "answer": "A", "rationale": "LPS (Lipopolysaccharide) crossing the gut barrier into systemic circulation Metabolic endotoxemia occurs when increased intestinal permeability allows bacterial LPS to enter the blood, triggering systemic cytokine release that affects neurobiology (brain fog).", "caseContext": null}, {"id": 140, "question": "Which \"Replace\" intervention is most likely needed given Elena's geographic tongue and bloating?", "options": [{"key": "A", "text": "Digestive enzymes or HCl"}, {"key": "B", "text": "High-dose Ibuprofen"}, {"key": "C", "text": "Synthetic food dyes"}], "answer": "A", "rationale": "Digestive enzymes or HCl Low Fecal Elastase indicates pancreatic exocrine insufficiency, requiring the \"Replace\" step of the 5R program to aid the Assimilation node.", "caseContext": null}, {"id": 141, "question": "If Elena’s total IgA is found to be deficient, what happens to her tTG-IgA test result?", "options": [{"key": "A", "text": "It stays the same"}, {"key": "B", "text": "It may yield a false negative"}, {"key": "C", "text": "It will always be high"}], "answer": "B", "rationale": "It may yield a false negative Since tTG is an IgA antibody, a patient with absolute IgA deficiency cannot produce it. Clinicians must test IgG-based antibodies (DGP-IgG) in these cases.", "caseContext": null}, {"id": 142, "question": "The \"Re-innoculate\" step of the 5R program involves:", "options": [{"key": "A", "text": "Taking antibiotics"}, {"key": "B", "text": "Using prebiotics and probiotics to support the Gut Microbiota"}, {"key": "C", "text": "Drinking more water"}], "answer": "B", "rationale": "Using prebiotics and probiotics to support the Gut Microbiota Re-inoculation (Step 4 of 5R) focuses on restoring a healthy microbiome using probiotics (live organisms) and prebiotics (fuel for organisms).", "caseContext": null}, {"id": 143, "question": "Elena’s low B12 is most likely a result of:", "options": [{"key": "A", "text": "Excessive stomach acid"}, {"key": "B", "text": "Malabsorption due to villous atrophy in the small intestine"}, {"key": "C", "text": "Too much exercise"}], "answer": "B", "rationale": "Malabsorption due to villous atrophy in the small intestine In Celiac disease, the immune system destroys the villi in the small intestine (villous atrophy), where B12 and Iron are absorbed, leading to the observed deficiencies.", "caseContext": null}, {"id": 144, "question": "According to the GI Module, \"D-I-G-I-N\" stands for Digestion, Intestinal Permeability, Gut Microbiota, Inflammation, and:", "options": [{"key": "A", "text": "Nutrient density"}, {"key": "B", "text": "Nervous System"}, {"key": "C", "text": "Nephrology"}], "answer": "B", "rationale": "Nervous System The \"N\" in D-I-G-I-N stands for Nervous System, specifically referring to the Enteric Nervous System and the bidirectional Gut-Brain Axis.", "caseContext": null}, {"id": 145, "question": "Elena's skin issues (acne) as a teen and current GI issues reflect the \"Cross-talk\" between which two nodes?", "options": [{"key": "A", "text": "Assimilation and Defense & Repair"}, {"key": "B", "text": "Energy and Transport"}, {"key": "C", "text": "Structural Integrity and Communication"}], "answer": "A", "rationale": "Assimilation and Defense & Repair Acne (Defense & Repair/Immune/Inflammation) and bloating (Assimilation) are classic examples of how gut-derived inflammation manifests as skin pathology.", "caseContext": null}, {"id": 146, "question": "The most \"User-Friendly\" way to start Elena on a healing path while awaiting biopsy results is:", "options": [{"key": "A", "text": "A strict 3-day water fast"}, {"key": "B", "text": "A whole-foods, nutrient-dense diet focusing on \"Replacing\" deficiencies"}, {"key": "C", "text": "High-dose Iron supplements"}], "answer": "B", "rationale": "A whole-foods, nutrient-dense diet focusing on \"Replacing\" deficiencies Patient-Centered Care involves supporting the patient's immediate health (nutrients) without interfering with definitive diagnosis (biopsy requires gluten consumption). Case Study 2 — Answer Key", "caseContext": null}, {"id": 147, "question": "According to the IFM Hormone Hierarchy, which node is the top clinical priority for Sarah?", "options": [{"key": "A", "text": "Thyroid (Initiate T4/T3 therapy)"}, {"key": "B", "text": "Adrenal and Insulin (HPA Axis and Glycemic Control)"}, {"key": "C", "text": "Sex Hormones (Estrogen/Progesterone replacement)"}], "answer": "B", "rationale": "Adrenal and Insulin (HP A Axis and Glycemic Control) Hormone Hierarchy: IFM teaches that you must address the \"floor\" (Insulin/Glycemic control) and the \"walls\" (Adrenals/ HPA) before the \"roof\" (Thyroid/Sex Hormones). Treating thyroid first in an unstable HPA axis can worsen fatigue.", "caseContext": "Case Study 2: The \"Inflammaging\" Executive Questions 147-160\nPatient: Sarah, 54-year-old female.\nChief Concern: \"Crushing fatigue,\" 15lb weight gain in 6 months, and \"brain fog.\"\nHistory & Timeline: Family history of T2D (Mother) and Hashimoto’s (Sister).  ·  High-stress litigation 8 months\nago followed by a severe flu with poor recovery.  ·  Drinks 4 cups coffee/day, 2 glasses wine nightly, sedentary job,\nand suspected sleep apnea.\nPHYSICAL EXAM\nBMI: 29.5;\nWaist: 37\";\nBP: 142/88.\nIndicators: Thinning outer eyebrows, \"buffalo hump,\" and +1 ankle edema.\nBIOMARKERS\nLipids: LDL 155, HDL 38, TG 210.\nMetabolic: Fasting Insulin 18, HbA1c 5.9%, hs-CRP 4.8.\nThyroid: TSH 3.8, Free T4 1.0, Free T3 2.1 (Low), rT3 32 (High).\nImmune/Hormone: TPO Ab 145, Morning Cortisol 22 (High), DHEA-S 85 (Low)."}, {"id": 148, "question": "Sarah’s thyroid labs (High rT3, Low Free T3) most likely indicate:", "options": [{"key": "A", "text": "Primary Hypothyroidism requiring immediate T4 monotherapy"}, {"key": "B", "text": "Non-Thyroidal Illness Syndrome (Deiodinase inhibition due to inflammation)"}, {"key": "C", "text": "Central Hypothyroidism due to pituitary exhaustion"}], "answer": "B", "rationale": "Non-Thyroidal Illness Syndrome (Deiodinase inhibition due to inflammation) Non-Thyroidal Illness Syndrome (NTIS): High rT3 and low Free T3 in the setting of high hs-CRP is \"euthyroid sick syndrome.\" The body downregulates conversion to conserve energy during inflammation.", "caseContext": null}, {"id": 149, "question": "Which mediator is most directly driving Sarah's elevated hs-CRP and inhibited thyroid conversion?", "options": [{"key": "A", "text": "Sedentary job"}, {"key": "B", "text": "Nightly alcohol consumption and underlying insulin resistance"}, {"key": "C", "text": "High caffeine intake"}], "answer": "B", "rationale": "Nightly alcohol consumption and underlying insulin resistance Alcohol & Insulin: Alcohol is a major mediator of inflammation (hs-CRP) and liver-based deiodinase inhibition. Sarah’s TG:HDL ratio and HbA1c suggest insulin resistance is the primary driver.", "caseContext": null}, {"id": 150, "question": "Sarah’s waist circumference (37”) and Blood Pressure (142/88) confirm a diagnosis of:", "options": [{"key": "A", "text": "Metabolic Syndrome"}, {"key": "B", "text": "Isolated Systolic Hypertension"}, {"key": "C", "text": "Cushing’s Disease"}], "answer": "A", "rationale": "Metabolic Syndrome Metabolic Syndrome: Diagnosis requires 3 of 5: Waist >35\" (Sarah: 37\"), BP >130/85 (Sarah: 142/88), TG >150 (Sarah: 210), HDL <50 (Sarah: 38), or Fasting Glucose >100. Sarah meets 4/5.", "caseContext": null}, {"id": 151, "question": "Which intervention targets both \"Defense and Repair\" and \"Energy\" (Mitochondria)?", "options": [{"key": "A", "text": "Vitamin C 1000mg"}, {"key": "B", "text": "Alpha-Lipoic Acid (ALA)"}, {"key": "C", "text": "Melatonin 3mg at bedtime"}], "answer": "B", "rationale": "Alpha-Lipoic Acid (ALA) Alpha-Lipoic Acid (ALA): ALA is a unique pleiotropic nutrient that improves insulin sensitivity (Communication), acts as a potent antioxidant (Defense/Repair), and is a cofactor for mitochondrial enzymes (Energy).", "caseContext": null}, {"id": 152, "question": "The \"Buffalo Hump\" and high Fasting Insulin (18) point to dysfunction in which Matrix node?", "options": [{"key": "A", "text": "Biotransformation"}, {"key": "B", "text": "Communication"}, {"key": "C", "text": "Structural Integrity"}], "answer": "B", "rationale": "Communication Communication: Insulin and Cortisol are the primary signaling molecules in this node. The \"Buffalo Hump\" is a physical indicator of hypercortisolism/insulin cross-talk.", "caseContext": null}, {"id": 153, "question": "Which initial \"Core Food Plan\" is most appropriate for Sarah's current presentation?", "options": [{"key": "A", "text": "Keto Food Plan"}, {"key": "B", "text": "Cardiometabolic Food Plan"}, {"key": "C", "text": "Mito Food Plan"}], "answer": "B", "rationale": "Cardiometabolic Food Plan Communication: Insulin and Cortisol are the primary signaling molecules in this node. The \"Buffalo Hump\" is a physical indicator of hypercortisolism/insulin cross-talk.", "caseContext": null}, {"id": 154, "question": "In the \"Communication\" node, Sarah's high morning cortisol and low DHEA-S represent:", "options": [{"key": "A", "text": "Acute HPA activation (Alarm Phase)"}, {"key": "B", "text": "HPA Dysregulation (Adaptation/Resistance Phase)"}, {"key": "C", "text": "HPA Exhaustion (Burnout Phase)"}], "answer": "B", "rationale": "HP A Dysregulation (Adaptation/Resistance Phase) Adaptation/Resistance: High cortisol with low/dropping DHEA-S indicates the body is still mounting a response but is starting to \"steal\" precursors away from anabolic hormones (DHEA).", "caseContext": null}, {"id": 155, "question": "Which exam finding is a \"classic\" clinical indicator for functional thyroid deficiency?", "options": [{"key": "A", "text": "Buffalo hump"}, {"key": "B", "text": "Thinning outer third of eyebrows"}, {"key": "C", "text": "Ankle edema"}], "answer": "B", "rationale": "Thinning outer third of eyebrows Queen Anne’s Sign: Thinning of the outer third of the eyebrows is a classic physical exam finding for functional hypothyroidism.", "caseContext": null}, {"id": 156, "question": "Sarah's TG:HDL ratio (> 5) is a significant surrogate marker for:", "options": [{"key": "A", "text": "Heavy metal toxicity"}, {"key": "B", "text": "Small dense LDL particles and insulin resistance"}, {"key": "C", "text": "Hypochlorhydria"}], "answer": "B", "rationale": "Small dense LDL particles and insulin resistance Small Dense LDL: A TG:HDL ratio >3.0 (Sarah's is 5.5) is a highly specific surrogate for the presence of atherogenic Pattern B LDL particles.", "caseContext": null}, {"id": 157, "question": "The \"crushing fatigue\" following a viral illness suggests a \"Mitochondrial Freeze\" response. This is primarily organized under:", "options": [{"key": "A", "text": "Assimilation"}, {"key": "B", "text": "Energy"}, {"key": "C", "text": "Transport"}], "answer": "B", "rationale": "Energy Energy: Fatigue and the \"Cell Danger Response\" (Mitochondrial shutdown following infection) are organized under the Energy node.", "caseContext": null}, {"id": 158, "question": "If sleep apnea is confirmed, it acts as a:", "options": [{"key": "A", "text": "Antecedent"}, {"key": "B", "text": "Trigger"}, {"key": "C", "text": "Mediator/Perpetuator"}], "answer": "C", "rationale": "Mediator/Perpetuator Mediator: Sleep apnea acts as a daily \"perpetuator\" of sympathetic drive, inflammation, and insulin resistance.", "caseContext": null}, {"id": 159, "question": "Which botanical would help Sarah \"calm\" the HPA axis while improving insulin sensitivity?", "options": [{"key": "A", "text": "Licorice Root"}, {"key": "B", "text": "Ashwagandha"}, {"key": "C", "text": "Panax Ginseng"}], "answer": "B", "rationale": "Ashwagandha Ashwagandha: An adaptogen known to lower cortisol while simultaneously improving insulin sensitivity and supporting T4 to T3 conversion.", "caseContext": null}, {"id": 160, "question": "To address Sarah's \"Assimilation\" node (suspected hypochlorhydria), what should be assessed first?", "options": [{"key": "A", "text": "Breath test for SIBO"}, {"key": "B", "text": "Use of NSAIDs or alcohol impacting the gastric mucosa"}, {"key": "C", "text": "Stool elastase levels"}], "answer": "B", "rationale": "Use of NSAIDs or alcohol impacting the gastric mucosa Alcohol/NSAIDs: Before testing for SIBO, IFM logic dictates looking at lifestyle mediators that damage the brush border or gastric lining.", "caseContext": null}];
+    const MEDICAL_DICT = {"hypothyroidism": {"ipa": "/ˌhaɪ.poʊˈθaɪ.rɔɪ.dɪ.zəm/", "cn": "甲状腺功能减退"}, "hyperthyroidism": {"ipa": "/ˌhaɪ.pərˈθaɪ.rɔɪ.dɪ.zəm/", "cn": "甲状腺功能亢进"}, "mitochondria": {"ipa": "/ˌmaɪ.toʊˈkɒn.dri.ə/", "cn": "线粒体"}, "microbiome": {"ipa": "/ˈmaɪ.kroʊ.baɪ.oʊm/", "cn": "微生物组/菌群"}, "dysbiosis": {"ipa": "/dɪsˈbaɪ.oʊ.sɪs/", "cn": "肠道菌群失调"}, "permeability": {"ipa": "/ˌpɜːr.mi.əˈbɪl.ɪ.ti/", "cn": "通透性(如肠漏 leaky gut)"}, "inflammation": {"ipa": "/ˌɪn.fləˈmeɪ.ʃən/", "cn": "炎症反应"}, "cortisol": {"ipa": "/ˈkɔːr.tɪ.sɒl/", "cn": "皮质醇(主要应激激素)"}, "adrenal": {"ipa": "/əˈdriː.nəl/", "cn": "肾上腺"}, "glutathione": {"ipa": "/ɡluː.təˈθaɪ.oʊn/", "cn": "谷胱甘肽(核心抗氧化剂/解毒结合物)"}, "methylation": {"ipa": "/ˌmɛθ.ɪˈleɪ.ʃən/", "cn": "甲基化途径"}, "detoxification": {"ipa": "/diːˌtɒk.sɪ.fɪˈkeɪ.ʃən/", "cn": "解毒转化"}, "biotransformation": {"ipa": "/ˌbaɪ.oʊˌtræns.fərˈmeɪ.ʃən/", "cn": "生物转化(肝脏解毒结合代谢)"}, "assimilation": {"ipa": "/əˌsɪm.ɪˈleɪ.ʃən/", "cn": "同化/消化吸收节点"}, "antecedents": {"ipa": "/ˌæn.tɪˈsiː.dənts/", "cn": "先决因素/前因(基因/早期经历)"}, "triggers": {"ipa": "/ˈtrɪɡ.ərz/", "cn": "触发因素(急性激活事件)"}, "mediators": {"ipa": "/ˈmiː.di.eɪ.tərz/", "cn": "中介因素(维持病理状态的因子)"}, "heuristic": {"ipa": "/hjuːˈrɪs.tɪk/", "cn": "启发式临床策略(如GOTOIT)"}, "anthropometrics": {"ipa": "/ˌæn.θrə.pəˈmɛt.rɪks/", "cn": "人体测量学(身高/体重/腰臀比)"}, "homeostasis": {"ipa": "/ˌhoʊ.mi.oʊˈsteɪ.sɪs/", "cn": "内环境稳态"}, "allostatic": {"ipa": "/ˌæl.oʊˈstæt.ɪk/", "cn": "变应性/适应性负荷"}, "pathophysiology": {"ipa": "/ˌpæθ.oʊ.fɪz.iˈɒl.ə.dʒi/", "cn": "病理生理学"}, "zonulin": {"ipa": "/ˈzoʊ.njʊ.lɪn/", "cn": "连蛋白(调控肠上皮紧密连接)"}, "calprotectin": {"ipa": "/ˌkæl.proʊˈtɛk.tɪn/", "cn": "钙卫蛋白(肠道中性粒细胞炎症标志物)"}, "endotoxin": {"ipa": "/ˌɛn.doʊˈtɒk.sɪn/", "cn": "内毒素(LPS脂多糖)"}, "lipopolysaccharide": {"ipa": "/ˌlɪp.oʊˌpɒl.iˈsæk.ə.raɪd/", "cn": "脂多糖(LPS)"}, "homocysteine": {"ipa": "/ˌhoʊ.moʊˈsɪs.tiː.iːn/", "cn": "同型半胱氨酸(心血管/甲基化指标)"}, "polymorphism": {"ipa": "/ˌpɒl.iˈmɔːr.fɪ.zəm/", "cn": "基因多态性(SNP)"}, "epigenetics": {"ipa": "/ˌɛp.ɪ.dʒɪˈnɛt.ɪks/", "cn": "表观遗传学"}, "neurotransmitter": {"ipa": "/ˌnjʊə.roʊ.trænzˈmɪt.ər/", "cn": "神经递质"}, "serotonin": {"ipa": "/ˌsɛr.əˈtoʊ.nɪn/", "cn": "5-羟色胺(血清素)"}, "dopamine": {"ipa": "/ˈdoʊ.pə.miːn/", "cn": "多巴胺"}, "bioavailability": {"ipa": "/ˌbaɪ.oʊ.əˌveɪ.ləˈbɪl.ɪ.ti/", "cn": "生物利用度"}, "immunoglobulin": {"ipa": "/ˌɪm.jʊ.noʊˈɡlɒb.jʊ.lɪn/", "cn": "免疫球蛋白"}, "cytokine": {"ipa": "/ˈsaɪ.toʊ.kaɪn/", "cn": "细胞因子"}, "ferritin": {"ipa": "/ˈfɛr.ɪ.tɪn/", "cn": "铁蛋白(体内储存铁指标)"}, "thyroiditis": {"ipa": "/ˌθaɪ.rɔɪˈdaɪ.tɪs/", "cn": "甲状腺炎"}, "hashimoto": {"ipa": "/ˌhɑː.ʃiˈmoʊ.toʊ/", "cn": "桥本氏(自身免疫甲状腺病)"}, "bradycardia": {"ipa": "/ˌbræd.ɪˈkɑːr.di.ə/", "cn": "心动过缓"}, "edema": {"ipa": "/ɪˈdiː.mə/", "cn": "水肿"}, "pesticide": {"ipa": "/ˈpɛs.tɪ.saɪd/", "cn": "杀虫剂/农药"}, "amalgam": {"ipa": "/əˈmæl.ɡəm/", "cn": "汞齐(银汞补牙材料)"}, "deiodinase": {"ipa": "/diːˈaɪ.ə.dɪ.neɪs/", "cn": "脱碘酶(T4转T3关键酶)"}, "chelation": {"ipa": "/kiːˈleɪ.ʃən/", "cn": "螯合治疗(促重金属排出)"}, "mitochondrial": {"ipa": "/ˌmaɪ.toʊˈkɒn.dri.əl/", "cn": "线粒体的"}, "oxidative": {"ipa": "/ˈɒk.sɪ.deɪ.tɪv/", "cn": "氧化的"}, "antioxidant": {"ipa": "/ˌæn.tiˈɒk.sɪ.dənt/", "cn": "抗氧化剂"}, "sulforaphane": {"ipa": "/sʌlˈfɔː.rə.feɪn/", "cn": "萝卜硫素(强效Nrf2激活剂)"}, "berberine": {"ipa": "/ˈbɜːr.bər.iːn/", "cn": "小檗碱/黄连素(AMPK激活剂)"}, "resveratrol": {"ipa": "/rɛzˈvɛr.ə.trɒl/", "cn": "白藜芦醇"}, "curcumin": {"ipa": "/ˈkɜːr.kjʊ.mɪn/", "cn": "姜黄素"}, "quercetin": {"ipa": "/ˈkwɜːr.sɪ.tɪn/", "cn": "槲皮素"}, "butyrate": {"ipa": "/ˈbjuː.tɪ.reɪt/", "cn": "丁酸盐(短链脂肪酸核心成分)"}, "prebiotics": {"ipa": "/ˌpriː.baɪˈɒt.ɪks/", "cn": "益生元"}, "probiotics": {"ipa": "/ˌproʊ.baɪˈɒt.ɪks/", "cn": "益生菌"}, "glucuronidation": {"ipa": "/ɡluːˌkjʊ.rɒn.ɪˈdeɪ.ʃən/", "cn": "葡萄糖醛酸化(二期结合解毒)"}, "sulfation": {"ipa": "/sʌlˈfeɪ.ʃən/", "cn": "硫酸化结合解毒"}, "acetylation": {"ipa": "/əˌsɛt.ɪˈleɪ.ʃən/", "cn": "乙酰化结合解毒"}, "hypochlorhydria": {"ipa": "/ˌhaɪ.poʊ.klɔːrˈhaɪ.dri.ə/", "cn": "胃酸过低/胃酸缺乏"}, "circadian": {"ipa": "/sɜːrˈkeɪ.di.ən/", "cn": "昼夜节律/生物钟"}, "competency": {"ipa": "/ˈkɒm.pɪ.tən.si/", "cn": "临床胜任力/考核标准"}, "dysregulation": {"ipa": "/dɪsˌrɛɡ.jʊˈleɪ.ʃən/", "cn": "调节异常/失调"}, "cardiometabolic": {"ipa": "/ˌkɑːr.di.oʊˌmɛt.əˈbɒl.ɪk/", "cn": "心血管代谢的"}};
+
+    const STORAGE_KEY_ANSWERS = 'ifm_exam4_answers';
+    const STORAGE_KEY_SUBMITTED = 'ifm_exam4_submitted_groups';
+    const STORAGE_KEY_VOCAB = 'ifm_vocab_list';
+    const STORAGE_KEY_THEME = 'ifm_theme';
+
+    let userAnswers = JSON.parse(localStorage.getItem(STORAGE_KEY_ANSWERS) || '{}');
+    let submittedGroups = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED) || '{}');
+    let vocabList = JSON.parse(localStorage.getItem(STORAGE_KEY_VOCAB) || '[]');
+    let currentBatch = 1;
+    const batchSize = 20;
+    const totalBatches = 8;
+
+    function speakWord(word) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(word);
+      const voices = window.speechSynthesis.getVoices();
+      const naturalVoice = voices.find(v => (v.name.includes("Samantha") || v.name.includes("Ava") || v.name.includes("Jenny") || v.name.includes("Natural")) && v.lang.startsWith("en")) || voices.find(v => v.lang === "en-US");
+      if (naturalVoice) utter.voice = naturalVoice;
+      utter.lang = 'en-US';
+      utter.rate = 0.88;
+      window.speechSynthesis.speak(utter);
+    }
+    if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+    function init() {
+      applyTheme();
+      renderBatchBar();
+      renderQuestions();
+      updateBadges();
+      setupSelectionTooltip();
+    }
+
+    function switchView(viewName) {
+      document.getElementById('view-exam').style.display = viewName === 'exam' ? 'block' : 'none';
+      document.getElementById('view-vocab').style.display = viewName === 'vocab' ? 'block' : 'none';
+      document.getElementById('view-wrong').style.display = viewName === 'wrong' ? 'block' : 'none';
+
+      document.getElementById('tab-exam').className = 'nav-btn' + (viewName === 'exam' ? ' active' : '');
+      document.getElementById('tab-vocab').className = 'nav-btn' + (viewName === 'vocab' ? ' active' : '');
+      document.getElementById('tab-wrong').className = 'nav-btn' + (viewName === 'wrong' ? ' active' : '');
+
+      if (viewName === 'vocab') renderVocabList();
+      if (viewName === 'wrong') renderWrongList();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderBatchBar() {
+      const container = document.getElementById('batch-grid');
+      let html = '';
+      let totalAnsweredAll = Object.keys(userAnswers).length;
+
+      for (let i = 1; i <= totalBatches; i++) {
+        const start = (i - 1) * batchSize + 1;
+        const end = i * batchSize;
+        
+        let answeredInGroup = 0;
+        let correctInGroup = 0;
+        for (let qid = start; qid <= end; qid++) {
+          if (userAnswers[qid]) answeredInGroup++;
+          const q = ALL_QUESTIONS[qid - 1];
+          if (q && userAnswers[qid] === q.answer) correctInGroup++;
+        }
+
+        const isSub = !!submittedGroups[i];
+        let subText = `${answeredInGroup}/20 题`;
+        if (isSub) {
+          subText = `${correctInGroup}/20 正确 ✅`;
+        }
+
+        html += `
+          <button class="batch-btn ${i === currentBatch ? 'active' : ''}" onclick="switchBatch(${i})">
+            <span>${start}–${end} 题</span>
+            <span class="batch-sub">${subText}</span>
+          </button>
+        `;
+      }
+      container.innerHTML = html;
+      document.getElementById('exam-overall-stats').innerText = `总进度：${totalAnsweredAll} / 160 题已答`;
+      document.getElementById('current-group-num').innerText = currentBatch;
+
+      const isCurrentSub = !!submittedGroups[currentBatch];
+      const btnSubmit = document.getElementById('btn-group-submit');
+      if (isCurrentSub) {
+        btnSubmit.innerText = '🔄 重新核对本组';
+      } else {
+        btnSubmit.innerText = '📝 交卷核对本组';
+      }
+    }
+
+    function switchBatch(batchNum) {
+      currentBatch = batchNum;
+      renderBatchBar();
+      renderQuestions();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextGroup() {
+      if (currentBatch < totalBatches) {
+        switchBatch(currentBatch + 1);
+      } else {
+        showToast('已经是最后一组了！建议切换到【错题深度复盘】进行汇总！');
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      const startIdx = (currentBatch - 1) * batchSize;
+      const batchList = ALL_QUESTIONS.slice(startIdx, startIdx + batchSize);
+      const isSub = !!submittedGroups[currentBatch];
+
+      let html = '';
+
+      batchList.forEach(q => {
+        const uAns = userAnswers[q.id];
+
+        if (q.caseContext) {
+          html += `
+            <div class="case-card">
+              <h3>📋 综合临床案例背景</h3>
+              <pre>${q.caseContext}</pre>
+            </div>
+          `;
+        }
+
+        html += `
+          <div class="card" id="q-card-${q.id}">
+            <div class="q-meta">
+              <span class="q-badge">QUESTION ${q.id} OF 160</span>
+              <span>IFM Practice Exam 4</span>
+            </div>
+            <div class="question-stem">${q.question}</div>
+            <div class="options">
+              ${q.options.map(opt => {
+                let optClass = 'option-label';
+                if (isSub) {
+                  if (opt.key === q.answer) optClass += ' is-correct';
+                  else if (uAns === opt.key && uAns !== q.answer) optClass += ' is-wrong';
+                }
+                return `
+                  <label class="${optClass}" id="opt-label-${q.id}-${opt.key}">
+                    <input type="radio" name="q-${q.id}" value="${opt.key}" 
+                      ${uAns === opt.key ? 'checked' : ''} 
+                      onchange="selectAnswer(${q.id}, '${opt.key}')">
+                    <span><span class="opt-key">${opt.key}.</span>${opt.text}</span>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+            <div class="explanation" id="exp-${q.id}" style="display: ${isSub ? 'block' : 'none'};">
+              <div class="exp-row"><span class="exp-tag">🎯 正确答案:</span> <strong>${q.answer}</strong></div>
+              <div class="exp-row"><span class="exp-tag">🔬 IFM 官方临床解析:</span> ${q.rationale || '详见 IFM 教材核心讲义解析'}</div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function selectAnswer(qid, val) {
+      userAnswers[qid] = val;
+      localStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(userAnswers));
+      renderBatchBar();
+      updateBadges();
+    }
+
+    function submitCurrentGroup() {
+      const start = (currentBatch - 1) * batchSize + 1;
+      const end = currentBatch * batchSize;
+      
+      let answeredCount = 0;
+      let correctCount = 0;
+
+      for (let qid = start; qid <= end; qid++) {
+        if (userAnswers[qid]) answeredCount++;
+        const q = ALL_QUESTIONS[qid - 1];
+        if (q && userAnswers[qid] === q.answer) correctCount++;
+      }
+
+      submittedGroups[currentBatch] = true;
+      localStorage.setItem(STORAGE_KEY_SUBMITTED, JSON.stringify(submittedGroups));
+
+      renderBatchBar();
+      renderQuestions();
+      updateBadges();
+
+      showToast(`第 ${currentBatch} 组核对完毕！答对 ${correctCount} / ${batchSize} 题（得分率 ${Math.round(correctCount / batchSize * 100)}%）`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    let currentSelectedText = '';
+    function setupSelectionTooltip() {
+      const tooltip = document.getElementById('selection-tooltip');
+
+      document.addEventListener('mouseup', function(e) {
+        if (e.target.closest('#selection-tooltip')) return;
+
+        const sel = window.getSelection();
+        const text = sel.toString().trim();
+
+        if (text && text.length > 1 && text.length < 50 && /^[a-zA-Z\s\-]+$/.test(text)) {
+          currentSelectedText = text;
+          const cleanKey = text.toLowerCase();
+          const dictEntry = MEDICAL_DICT[cleanKey] || {};
+
+          document.getElementById('tt-word').innerText = text;
+          document.getElementById('tt-ipa').innerText = dictEntry.ipa || '';
+          document.getElementById('tt-cn').innerText = dictEntry.cn || '点击收录或发音';
+
+          const range = sel.getRangeAt(0);
+          const rect = range.getBoundingClientRect();
+          
+          tooltip.style.left = (rect.left + rect.width / 2 + window.scrollX) + 'px';
+          tooltip.style.top = (rect.top + window.scrollY) + 'px';
+          tooltip.style.display = 'block';
+        } else {
+          tooltip.style.display = 'none';
+        }
+      });
+    }
+
+    function playSelectedWord(e) {
+      e.stopPropagation();
+      if (currentSelectedText) speakWord(currentSelectedText);
+    }
+
+    function saveSelectedWord(e) {
+      e.stopPropagation();
+      if (!currentSelectedText) return;
+      const cleanKey = currentSelectedText.toLowerCase();
+      const dictEntry = MEDICAL_DICT[cleanKey] || {};
+
+      if (!vocabList.some(v => v.word.toLowerCase() === cleanKey)) {
+        vocabList.unshift({
+          word: currentSelectedText,
+          ipa: dictEntry.ipa || '',
+          cn: dictEntry.cn || '',
+          time: new Date().toLocaleDateString()
+        });
+        localStorage.setItem(STORAGE_KEY_VOCAB, JSON.stringify(vocabList));
+        updateBadges();
+        showToast(`已成功收录: ${currentSelectedText} 到生词本！`);
+      } else {
+        showToast(`该词已在生词本中`);
+      }
+      document.getElementById('selection-tooltip').style.display = 'none';
+    }
+
+    function renderVocabList() {
+      const tbody = document.getElementById('vocab-table-body');
+      if (vocabList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 2.5rem; color: var(--text-muted);">生词本为空。在答题过程中用鼠标选中任何英文生词，即可划词发音并收录！</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = vocabList.map((item, idx) => `
+        <tr>
+          <td><strong>${item.word}</strong></td>
+          <td style="color: #8b5cf6; font-family: monospace;">${item.ipa || '-'}</td>
+          <td>${item.cn || '<span style="color:var(--text-muted);">自行记忆</span>'}</td>
+          <td style="text-align: center;">
+            <button class="btn-icon" onclick="speakWord('${item.word}')" title="播放真人自然发音">🔊</button>
+          </td>
+          <td style="text-align: center;">
+            <button class="btn-icon" onclick="deleteVocab(${idx})" title="删除" style="color: var(--danger);">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function deleteVocab(idx) {
+      vocabList.splice(idx, 1);
+      localStorage.setItem(STORAGE_KEY_VOCAB, JSON.stringify(vocabList));
+      renderVocabList();
+      updateBadges();
+      showToast('已从生词本移除');
+    }
+
+    function clearVocab() {
+      if (confirm('确定要清空全部生词本吗？')) {
+        vocabList = [];
+        localStorage.setItem(STORAGE_KEY_VOCAB, JSON.stringify(vocabList));
+        renderVocabList();
+        updateBadges();
+        showToast('生词本已清空');
+      }
+    }
+
+    function copyVocabMarkdown() {
+      if (vocabList.length === 0) return showToast('生词本为空！');
+      let md = '| 单词 (Word) | 国际音标 (IPA) | 功能医学专业释义 |\n|---|---|---|\n';
+      vocabList.forEach(v => {
+        md += `| ${v.word} | ${v.ipa} | ${v.cn} |\n`;
+      });
+      navigator.clipboard.writeText(md).then(() => showToast('已成功复制 Markdown 表格到剪贴板！可直接粘贴至 Obsidian！'));
+    }
+
+    function exportVocabTSV() {
+      if (vocabList.length === 0) return showToast('生词本为空！');
+      let tsv = '';
+      vocabList.forEach(v => {
+        tsv += `${v.word}\t${v.ipa}\t${v.cn}\n`;
+      });
+      navigator.clipboard.writeText(tsv).then(() => showToast('已成功复制 TSV 到剪贴板！可直接粘贴导入 Anki！'));
+    }
+
+    function renderWrongList() {
+      const container = document.getElementById('wrong-list-container');
+      const wrongQuestions = [];
+
+      ALL_QUESTIONS.forEach(q => {
+        const groupNum = Math.ceil(q.id / batchSize);
+        if (submittedGroups[groupNum]) {
+          const uAns = userAnswers[q.id];
+          if (uAns && uAns !== q.answer) {
+            wrongQuestions.push({ question: q, userAns: uAns });
+          }
+        }
+      });
+
+      if (wrongQuestions.length === 0) {
+        container.innerHTML = `
+          <div class="card" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+            🎉 暂无错题记录！请先在【英文真题】中作答并点击【交卷核对】，系统会自动抓取全部错题！
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = wrongQuestions.map(w => `
+        <div class="wrong-item">
+          <div class="wrong-header">
+            <span style="color: var(--danger);">QUESTION ${w.question.id} (第 ${Math.ceil(w.question.id / batchSize)} 组)</span>
+            <span>IFM Practice Exam 4</span>
+          </div>
+          <div class="wrong-stem">${w.question.question}</div>
+          <div class="wrong-choice-grid">
+            <div class="my-choice">❌ 我的选择: ${w.userAns}</div>
+            <div class="correct-choice">✅ 正确答案: ${w.question.answer}</div>
+          </div>
+          <div class="explanation" style="display:block; margin-top: 0.6rem;">
+            <div class="exp-row"><span class="exp-tag">🔬 机制深度剖析:</span> ${w.question.rationale}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getWrongList() {
+      const wrongQuestions = [];
+      ALL_QUESTIONS.forEach(q => {
+        const groupNum = Math.ceil(q.id / batchSize);
+        if (submittedGroups[groupNum]) {
+          const uAns = userAnswers[q.id];
+          if (uAns && uAns !== q.answer) {
+            wrongQuestions.push({ q: q, uAns: uAns });
+          }
+        }
+      });
+      return wrongQuestions;
+    }
+
+    function copyWrongForNotebookLM() {
+      const wrongQuestions = getWrongList();
+      if (wrongQuestions.length === 0) return showToast('目前暂无已批改出的错题！');
+
+      let text = `【请基于已上传的 IFM 官方讲义、教材与课程 Transcript 检索并回答】\n\n`;
+      text += `我在进行 IFM Practice Exam 4 模考时做错了以下题目。请检索知识库中对应的 APM 模块（GI, Detox, Hormone, Energy, Immune, Cardiometabolic, Neuro/Matrix/GOTOIT）及课程音频文字稿：\n\n`;
+      text += `1. **知识点与模块定位**：指出每道题涉及的核心模块、讲义章节或专家观点；\n`;
+      text += `2. **错选辨析与机制深剖**：对照【我的错误选择】与【官方正确答案】，用讲义中的生理/生化机理解释我为什么会混淆，并引用讲义依据；\n`;
+      text += `3. **临床要点总结**：提炼该知识点在 IFM 认证考试中的必背临床诊断与干预原则。\n\n`;
+      text += `### 错题明细清单：\n\n`;
+
+      wrongQuestions.forEach((item, index) => {
+        text += `#### 错题 ${index + 1} (Question ${item.q.id})\n`;
+        text += `**英文题干**: ${item.q.question}\n`;
+        text += `**选项列表**:\n`;
+        item.q.options.forEach(opt => {
+          text += `  - ${opt.key}. ${opt.text}\n`;
+        });
+        text += `**我的错误选择**: ❌ ${item.uAns}\n`;
+        text += `**官方正确答案**: ✅ ${item.q.answer}\n`;
+        text += `**官方临床解析**: ${item.q.rationale}\n\n`;
+      });
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('已复制【NotebookLM 专属提问指令】！直接粘贴到 NotebookLM 对话框即可！');
+      });
+    }
+
+    function copyWrongForAI() {
+      const wrongQuestions = getWrongList();
+      if (wrongQuestions.length === 0) return showToast('目前暂无已批改出的错题！');
+
+      let promptText = `## IFM 备考专项深度复盘与二次变式出题\n\n`;
+      promptText += `我在做 IFM Practice Exam 4 时出现以下错题。请调取我的 IFM 课程笔记与讲义，针对每道错题帮我做两件事：\n`;
+      promptText += `1. **核心病理生理机制剖析**：分析我为什么容易选错【我的选项】，正解【正确选项】在功能医学矩阵（Matrix）或生化通路上的根本逻辑是什么；\n`;
+      promptText += `2. **反向变式出题（二次盲测）**：针对该考点，出 2 道新的英文临床案例长题（附 4 个选项与解析），测试我是否彻底掌握。\n\n`;
+      promptText += `### 错题明细清单：\n\n`;
+
+      wrongQuestions.forEach((item, index) => {
+        promptText += `#### 错题 ${index + 1} (Question ${item.q.id})\n`;
+        promptText += `- **英文原题**: ${item.q.question}\n`;
+        promptText += `- **我的错误选择**: ${item.uAns}\n`;
+        promptText += `- **官方正确答案**: ${item.q.answer}\n`;
+        promptText += `- **官方参考解析**: ${item.q.rationale}\n\n`;
+      });
+
+      navigator.clipboard.writeText(promptText).then(() => {
+        showToast('已成功复制变式出题 Prompt！请直接粘贴至 Gemini / Claude 对话框！');
+      });
+    }
+
+    function copyWrongAsNote() {
+      const wrongQuestions = getWrongList();
+      if (wrongQuestions.length === 0) return showToast('目前暂无已批改出的错题！');
+
+      let text = `# IFM Practice Exam 4 错题复盘笔记\n\n`;
+      text += `> 收录日期: ${new Date().toLocaleDateString()} | 错题总数: ${wrongQuestions.length} 题\n\n`;
+      text += `---\n\n`;
+
+      wrongQuestions.forEach((item, index) => {
+        text += `### Q${item.q.id}. ${item.q.question}\n\n`;
+        item.q.options.forEach(opt => {
+          let mark = '  ';
+          if (opt.key === item.q.answer) mark = '✅ ';
+          else if (opt.key === item.uAns) mark = '❌ ';
+          text += `- ${mark}${opt.key}. ${opt.text}\n`;
+        });
+        text += `\n**我的错选**: ${item.uAns} | **标准答案**: ${item.q.answer}\n\n`;
+        text += `**官方临床机制解析 (Rationale)**:\n${item.q.rationale}\n\n`;
+        text += `---\n\n`;
+      });
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('已复制【Markdown 错题笔记源】！可在 NotebookLM 点击“添加笔记”直接粘贴！');
+      });
+    }
+
+    function updateBadges() {
+      document.getElementById('vocab-count').innerText = vocabList.length;
+      
+      let wrongCount = 0;
+      ALL_QUESTIONS.forEach(q => {
+        const groupNum = Math.ceil(q.id / batchSize);
+        if (submittedGroups[groupNum] && userAnswers[q.id] && userAnswers[q.id] !== q.answer) {
+          wrongCount++;
+        }
+      });
+      document.getElementById('wrong-count').innerText = wrongCount;
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3200);
+    }
+
+    function applyTheme() {
+      const th = localStorage.getItem(STORAGE_KEY_THEME) || 'light';
+      if (th === 'dark') document.body.classList.add('dark-mode');
+      else document.body.classList.remove('dark-mode');
+    }
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem(STORAGE_KEY_THEME, isDark ? 'dark' : 'light');
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
