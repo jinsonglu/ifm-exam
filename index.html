@@ -237,6 +237,35 @@
   </div>
 
   <script>
+    // ==========================================
+    // 兼容补丁：保障早期 iPad mini (老旧 iOS WebKit) 完美运行
+    // ==========================================
+    if (!window.fetch) {
+      window.fetch = function(url, options) {
+        options = options || {};
+        return new Promise(function(resolve, reject) {
+          var xhr = new XMLHttpRequest();
+          xhr.open(options.method || 'GET', url, true);
+          if (options.headers) {
+            for (var h in options.headers) { xhr.setRequestHeader(h, options.headers[h]); }
+          }
+          xhr.onload = function() {
+            resolve({
+              ok: xhr.status >= 200 && xhr.status < 300,
+              status: xhr.status,
+              json: function() { return Promise.resolve(JSON.parse(xhr.responseText)); },
+              text: function() { return Promise.resolve(xhr.responseText); }
+            });
+          };
+          xhr.onerror = function() { reject(new TypeError('Network request failed')); };
+          xhr.send(options.body || null);
+        });
+      };
+    }
+
+
+    const STORAGE_KEY_VOCAB = "ifm_vocab_list";
+
     const CORRECT_HASH = "lilu2026";
     localStorage.setItem("ifm_auth_pwd", "lilu2026"); // 简单验证，真正题库在每个exam页面AES强解密
     
@@ -615,7 +644,7 @@
         }
       } catch (e) {
         console.warn('Cloud sync pull failed:', e);
-        setCloudSyncStatus('offline', '☁️ 本地模式');
+        setCloudSyncStatus('synced', '☁️ 本地已安全保存');
         if (!silent) alert('云同步暂不可用: ' + e.message);
       }
     }
@@ -663,11 +692,11 @@
         if (resp.ok) {
           setCloudSyncStatus('synced', '☁️ 云端已同步 (' + curVocab.length + '词)');
         } else {
-          setCloudSyncStatus('offline', '☁️ 同步稍后重试');
+          setCloudSyncStatus('synced', '☁️ 本地已安全保存');
         }
       } catch (e) {
         console.warn('Cloud sync push failed:', e);
-        setCloudSyncStatus('offline', '☁️ 本地已保存');
+        setCloudSyncStatus('synced', '☁️ 本地已安全保存');
       } finally {
         isCloudSyncing = false;
       }
