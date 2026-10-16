@@ -172,9 +172,9 @@
   <div class="header">
     <h1>🩺 IFM 官方认证全真模拟考场 · 总控大厅</h1>
     <p class="sub">全量覆盖 6 套试卷 · 960 道临床案例真题 · 高强度 AES-256 加密保护 · 纯英文沉浸模考</p>
-    <div style="margin-top: 1.2rem; display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap;">
-      <button onclick="openSyncModal()" style="background: linear-gradient(135deg, #1e3a8a, #0284c7); color: #fff; border: none; padding: 0.65rem 1.4rem; border-radius: 999px; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);">
-        📲 Mac ↔ iPad 跨设备数据同步 (生词本 & 刷题进度)
+        <div style="margin-top: 1.2rem; display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap;">
+      <button id="cloud-sync-pill" onclick="autoPullFromCloud(false)" style="background: rgba(34, 197, 94, 0.12); border: 1.5px solid #86efac; color: #15803d; padding: 0.65rem 1.4rem; border-radius: 999px; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);" title="点击立即强制与云端对齐">
+        ☁️ 全自动无感云同步 (iPad ↔ Mac 实时对齐)
       </button>
     </div>
   </div>
@@ -365,7 +365,7 @@
       const inp = document.getElementById('sync-paste-input');
       const text = inp ? inp.value.trim() : '';
       if (!text) {
-        showToast('请先长按粘贴同步码或导入备份文件！');
+        alert('提示：输入框为空，请先在框里按 Command + V 粘贴同步码！');
         return;
       }
       executeMerge(text);
@@ -374,8 +374,13 @@
     function executeMerge(raw) {
       try {
         const result = mergeSyncData(raw);
-        showToast('🎉 成功同步！新增了 ' + result.addedCount + ' 个生词，更新了 ' + result.updatedCount + ' 个释义！总生词数：' + result.totalCount);
-        openSyncModal();
+        alert('🎉 成功同步！
+
+• 新增生词：' + result.addedCount + ' 个
+• 更新释义：' + result.updatedCount + ' 个
+• 当前生词总数：' + result.totalCount + ' 词');
+        closeSyncModal();
+        if (typeof switchView === 'function') switchView('vocab');
         const inp = document.getElementById('sync-paste-input');
         if (inp) inp.value = '';
       } catch (e) {
@@ -519,6 +524,162 @@
       };
       reader.readAsText(file);
     }
+
+    
+    // ==========================================
+    // ☁️ 全自动无感云同步 (iPad ↔ Mac 实时对齐)
+    // ==========================================
+    const CLOUD_SYNC_ENDPOINT = 'https://api.restful-api.dev/objects/ff808181a09d98f701a142dd80586e34';
+    let isCloudSyncing = false;
+    let cloudSyncDebounceTimer = null;
+
+    // 1. 进入页面或切回页面自动静默拉取
+    async function autoPullFromCloud(silent) {
+      if (typeof silent === 'undefined') silent = true;
+      if (!navigator.onLine) return;
+      try {
+        setCloudSyncStatus('syncing', '☁️ 同步中...');
+        const resp = await fetch(CLOUD_SYNC_ENDPOINT, { cache: 'no-store' });
+        if (!resp.ok) throw new Error('网络响应异常: ' + resp.status);
+        const json = await resp.json();
+        if (json && json.data && Array.isArray(json.data.vocab)) {
+          const remoteVocab = json.data.vocab;
+          const localVocab = JSON.parse(localStorage.getItem(STORAGE_KEY_VOCAB) || '[]');
+          
+          const mergeResult = mergeVocabArrays(localVocab, remoteVocab);
+          
+          if (mergeResult.hasNewFromRemote) {
+            vocabList = mergeResult.merged;
+            localStorage.setItem(STORAGE_KEY_VOCAB, JSON.stringify(vocabList));
+            if (typeof renderVocabList === 'function') renderVocabList();
+            if (typeof updateBadges === 'function') updateBadges();
+            if (!silent && typeof showToast === 'function') {
+              showToast('☁️ 云端同步成功！已自动对齐 ' + vocabList.length + ' 个生词！');
+            }
+          }
+
+          if (mergeResult.hasNewFromLocal) {
+            await autoPushToCloud(mergeResult.merged, true);
+          }
+          setCloudSyncStatus('synced', '☁️ 云端已同步 (' + (vocabList ? vocabList.length : localVocab.length) + '词)');
+        }
+      } catch (e) {
+        console.warn('Cloud sync pull failed:', e);
+        setCloudSyncStatus('offline', '☁️ 本地模式');
+        if (!silent) alert('云同步暂不可用: ' + e.message);
+      }
+    }
+
+    // 2. 新增 / 修改 / 删除生词时后台静默推送
+    function triggerAutoPushToCloud() {
+      clearTimeout(cloudSyncDebounceTimer);
+      setCloudSyncStatus('syncing', '☁️ 保存到云端...');
+      cloudSyncDebounceTimer = setTimeout(async function() {
+        const currentList = JSON.parse(localStorage.getItem(STORAGE_KEY_VOCAB) || '[]');
+        await autoPushToCloud(currentList, true);
+      }, 500);
+    }
+
+    async function autoPushToCloud(listToPush, isSilent) {
+      if (!navigator.onLine || isCloudSyncing) return;
+      isCloudSyncing = true;
+      try {
+        const payload = {
+          name: 'IFM_Dr_Lilu_Vocab_Store',
+          data: {
+            vocab: listToPush,
+            updatedAt: Date.now(),
+            device: navigator.userAgent.includes('iPad') ? 'iPad' : (navigator.userAgent.includes('Mac') ? 'Mac' : 'Browser')
+          }
+        };
+        const resp = await fetch(CLOUD_SYNC_ENDPOINT, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (resp.ok) {
+          setCloudSyncStatus('synced', '☁️ 云端已同步 (' + listToPush.length + '词)');
+        } else {
+          setCloudSyncStatus('offline', '☁️ 同步稍后重试');
+        }
+      } catch (e) {
+        console.warn('Cloud sync push failed:', e);
+        setCloudSyncStatus('offline', '☁️ 本地已保存');
+      } finally {
+        isCloudSyncing = false;
+      }
+    }
+
+    // 3. 智能双向合并
+    function mergeVocabArrays(localList, remoteList) {
+      const mergedMap = new Map();
+      let hasNewFromRemote = false;
+      let hasNewFromLocal = false;
+
+      remoteList.forEach(function(item) {
+        if (item && item.word) {
+          mergedMap.set(item.word.toLowerCase().trim(), Object.assign({}, item));
+        }
+      });
+
+      localList.forEach(function(localItem) {
+        if (!localItem || !localItem.word) return;
+        const key = localItem.word.toLowerCase().trim();
+        if (!mergedMap.has(key)) {
+          mergedMap.set(key, Object.assign({}, localItem));
+          hasNewFromLocal = true;
+        } else {
+          const remoteItem = mergedMap.get(key);
+          if ((!remoteItem.cn || remoteItem.cn === '自行记忆') && localItem.cn && localItem.cn !== '自行记忆') {
+            remoteItem.cn = localItem.cn;
+            hasNewFromLocal = true;
+          } else if (remoteItem.cn && remoteItem.cn !== localItem.cn && (!localItem.cn || localItem.cn === '自行记忆')) {
+            hasNewFromRemote = true;
+          }
+        }
+      });
+
+      remoteList.forEach(function(item) {
+        if (item && item.word) {
+          const key = item.word.toLowerCase().trim();
+          const existsInLocal = localList.some(function(l) {
+            return l.word && l.word.toLowerCase().trim() === key;
+          });
+          if (!existsInLocal) hasNewFromRemote = true;
+        }
+      });
+
+      const merged = Array.from(mergedMap.values());
+      return { merged: merged, hasNewFromRemote: hasNewFromRemote, hasNewFromLocal: hasNewFromLocal };
+    }
+
+    // 4. 云端状态胶囊 UI
+    function setCloudSyncStatus(status, text) {
+      const pill = document.getElementById('cloud-sync-pill');
+      if (!pill) return;
+      pill.innerText = text;
+      if (status === 'synced') {
+        pill.style.background = 'rgba(34, 197, 94, 0.12)';
+        pill.style.color = '#15803d';
+        pill.style.borderColor = '#86efac';
+      } else if (status === 'syncing') {
+        pill.style.background = 'rgba(2, 132, 199, 0.12)';
+        pill.style.color = '#0284c7';
+        pill.style.borderColor = '#7dd3fc';
+      } else {
+        pill.style.background = 'rgba(100, 116, 139, 0.12)';
+        pill.style.color = '#64748b';
+        pill.style.borderColor = '#cbd5e1';
+      }
+    }
+
+    // 页面加载和切回时自动拉取
+    window.addEventListener('load', function() {
+      setTimeout(function() { autoPullFromCloud(true); }, 300);
+    });
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) autoPullFromCloud(true);
+    });
 
     function unlockPortal() {
       const pwd = document.getElementById('portal-pwd-input').value.trim();
