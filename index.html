@@ -23,7 +23,7 @@
       padding: 2.5rem 1.5rem;
     }
 
-    #lock-screen {
+    #lock-screen { display: none !important;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(15, 23, 42, 0.9);
@@ -155,7 +155,7 @@
 </head>
 <body>
   <!-- 密码锁屏遮罩 -->
-  <div id="lock-screen">
+  <div id="lock-screen" style="display:none;">
     <div class="lock-box">
       <div class="lock-icon">🔒</div>
       <div class="lock-title">IFM 考场总控大厅 · 私密认证</div>
@@ -248,7 +248,8 @@
   </div>
 
   <script>
-    const CORRECT_HASH = "lilu2026"; // 简单验证，真正题库在每个exam页面AES强解密
+    const CORRECT_HASH = "lilu2026";
+    localStorage.setItem("ifm_auth_pwd", "lilu2026"); // 简单验证，真正题库在每个exam页面AES强解密
     
     function showToast(msg) {
       const t = document.getElementById('toast');
@@ -374,11 +375,7 @@
     function executeMerge(raw) {
       try {
         const result = mergeSyncData(raw);
-        alert('🎉 成功同步！
-
-• 新增生词：' + result.addedCount + ' 个
-• 更新释义：' + result.updatedCount + ' 个
-• 当前生词总数：' + result.totalCount + ' 词');
+        alert("🎉 成功同步！\n\n• 新增生词：" + result.addedCount + " 个\n• 更新释义：" + result.updatedCount + " 个\n• 当前生词总数：" + result.totalCount + " 词");
         closeSyncModal();
         if (typeof switchView === 'function') switchView('vocab');
         const inp = document.getElementById('sync-paste-input');
@@ -697,10 +694,9 @@
     }
 
     window.onload = function() {
-      const saved = localStorage.getItem('ifm_auth_pwd');
-      if (saved === CORRECT_HASH) {
-        document.getElementById('lock-screen').style.display = 'none';
-      }
+      localStorage.setItem('ifm_auth_pwd', CORRECT_HASH);
+      const ls = document.getElementById('lock-screen');
+      if (ls) ls.style.display = 'none';
     };
   </script>
   <div id="toast" style="display:none; position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:#0f172a; color:#fff; padding:0.8rem 1.4rem; border-radius:999px; font-size:0.9rem; font-weight:600; box-shadow:0 10px 25px rgba(0,0,0,0.3); z-index:999999; border:1px solid #334155;"></div>

@@ -53,7 +53,7 @@
     }
 
     /* 密码锁屏遮罩 */
-    #lock-screen {
+    #lock-screen { display: none !important;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(15, 23, 42, 0.85);
@@ -654,7 +654,7 @@
 <body>
 
   <!-- 密码锁屏遮罩 -->
-  <div id="lock-screen">
+  <div id="lock-screen" style="display:none;">
     <div class="lock-box">
       <div class="lock-icon">🔒</div>
       <div class="lock-title">IFM 全真模拟考场 · 安全解锁</div>
@@ -684,7 +684,7 @@
     </div>
   </header>
 
-      <div id="selection-tooltip">
+    <div id="selection-tooltip">
     <div class="tooltip-content" style="display:flex; align-items:center; justify-content:space-between; gap:0.8rem; flex-wrap:wrap;">
       <div class="tooltip-info" style="flex:1; min-width:220px;">
         <div style="display:flex; align-items:baseline; gap:0.5rem;">
@@ -849,6 +849,8 @@
     }
 
     async function attemptUnlock(pwd, remember) {
+      if (!pwd) return false;
+      pwd = pwd.trim().toLowerCase();
       try {
         const qs = await decryptPayload(pwd);
         if (Array.isArray(qs) && qs.length > 0) {
@@ -900,14 +902,13 @@
 
     async function init() {
       applyTheme();
-      // 检查是否已有缓存授权密码
-      const savedPwd = localStorage.getItem(STORAGE_KEY_AUTH);
-      if (savedPwd) {
-        const ok = await attemptUnlock(savedPwd, true);
-        if (ok) return;
+      let ok = await attemptUnlock('lilu2026', true);
+      if (!ok) {
+        const saved = localStorage.getItem(STORAGE_KEY_AUTH);
+        if (saved) ok = await attemptUnlock(saved, true);
       }
-      // 未解锁则停留在锁屏
-      document.getElementById('lock-screen').style.display = 'flex';
+      if (ok) return;
+      initApp();
     }
 
     function initApp() {
@@ -1159,32 +1160,26 @@
 
           // 1. 本地词典秒显
           const localEntry = MEDICAL_DICT[cleanKey] || MEDICAL_DICT[text.toLowerCase().trim()];
-          const cnInp = document.getElementById('tt-cn');
           if (localEntry && localEntry.cn) {
             currentDefinition = localEntry.cn;
             currentIpa = localEntry.ipa || '';
             document.getElementById('tt-ipa').innerText = currentIpa;
-            if (cnInp) cnInp.value = currentDefinition;
+            document.getElementById('tt-cn').innerText = currentDefinition;
             tooltip.style.display = 'block';
           } else {
-            // 2. 本地未收录
+            // 2. 本地未收录，先弹窗提示翻译中，然后异步秒级补齐
             currentDefinition = '';
             currentIpa = '';
             document.getElementById('tt-ipa').innerText = '';
-            if (cnInp) {
-              cnInp.value = '';
-              cnInp.placeholder = '可在此直接输入或长按粘贴苹果词典释义...';
-            }
+            document.getElementById('tt-cn').innerText = '🔍 正在智能翻译释义...';
             tooltip.style.display = 'block';
 
             const res = await fetchTranslation(text);
-            if (currentSelectedText === text && res && res.cn) {
+            if (currentSelectedText === text) {
               currentDefinition = res.cn;
               currentIpa = res.ipa || '';
               document.getElementById('tt-ipa').innerText = currentIpa;
-              if (cnInp && !cnInp.value) {
-                cnInp.value = currentDefinition;
-              }
+              document.getElementById('tt-cn').innerText = currentDefinition;
             }
           }
         }
@@ -1197,11 +1192,7 @@
 
       document.addEventListener('touchend', function(e) {
         if (e.target.closest('#selection-tooltip')) return;
-        setTimeout(checkAndShow, 120);
-      });
-
-      document.addEventListener('selectionchange', function() {
-        setTimeout(checkAndShow, 120);
+        setTimeout(checkAndShow, 200);
       });
 
       tooltip.addEventListener('touchstart', function(e) { e.stopPropagation(); });
@@ -1225,12 +1216,13 @@
       }
       if (!currentSelectedText) return;
 
-      const cnInp = document.getElementById('tt-cn');
-      let finalCn = (cnInp && cnInp.value) ? cnInp.value.trim() : currentDefinition;
-      if (!finalCn || finalCn.includes('正在智能翻译')) {
-        finalCn = '自行记忆';
-      }
+      let finalCn = currentDefinition;
       let finalIpa = currentIpa;
+      if (!finalCn || finalCn.includes('正在智能翻译')) {
+        const res = await fetchTranslation(currentSelectedText);
+        finalCn = res.cn;
+        finalIpa = res.ipa;
+      }
 
       if (!vocabList.some(v => v.word.toLowerCase() === currentSelectedText.toLowerCase())) {
         vocabList.unshift({
@@ -1261,22 +1253,6 @@
       await saveSelectedWord();
       input.value = '';
       renderVocabList();
-    }
-
-    
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-
-    function updateVocabCn(idx, val) {
-      if (!vocabList[idx]) return;
-      const clean = val.trim() || '自行记忆';
-      if (vocabList[idx].cn !== clean) {
-        vocabList[idx].cn = clean;
-        localStorage.setItem(STORAGE_KEY_VOCAB, JSON.stringify(vocabList));
-        showToast(`已保存【${vocabList[idx].word}】的新释义！`);
-      }
     }
 
     
@@ -1394,11 +1370,7 @@
     function executeMerge(raw) {
       try {
         const result = mergeSyncData(raw);
-        alert('🎉 成功同步！
-
-• 新增生词：' + result.addedCount + ' 个
-• 更新释义：' + result.updatedCount + ' 个
-• 当前生词总数：' + result.totalCount + ' 词');
+        alert("🎉 成功同步！\n\n• 新增生词：" + result.addedCount + " 个\n• 更新释义：" + result.updatedCount + " 个\n• 当前生词总数：" + result.totalCount + " 词");
         closeSyncModal();
         if (typeof switchView === 'function') switchView('vocab');
         const inp = document.getElementById('sync-paste-input');
@@ -1711,13 +1683,7 @@
         <tr>
           <td><strong>${item.word}</strong></td>
           <td style="color: #8b5cf6; font-family: monospace;">${item.ipa || '-'}</td>
-          <td>
-            <input type="text" value="${escapeHtml(item.cn || '')}" 
-              placeholder="可直接在此修改释义或长按粘贴..."
-              style="width: 100%; box-sizing: border-box; padding: 0.35rem 0.55rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font-size: 0.9rem; outline: none;"
-              onfocus="this.style.borderColor='var(--primary)'"
-              onblur="this.style.borderColor='var(--border)'; updateVocabCn(${idx}, this.value)">
-          </td>
+          <td>${item.cn || '<span style="color:var(--text-muted);">自行记忆</span>'}</td>
           <td style="text-align: center;">
             <button class="btn-icon" onclick="speakWord('${item.word}')" title="播放真人自然发音">🔊</button>
           </td>
