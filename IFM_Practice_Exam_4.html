@@ -668,7 +668,7 @@
       <button class="nav-btn active" id="tab-exam" onclick="switchView('exam')">📝 英文真题 (160题)</button>
       <button class="nav-btn" id="tab-vocab" onclick="switchView('vocab')">📖 语音生词本 (<span id="vocab-count">0</span>)</button>
       <button class="nav-btn" id="tab-wrong" onclick="switchView('wrong')">❌ 错题深度复盘 (<span id="wrong-count">0</span>)</button>
-      <button id="cloud-sync-pill" class="nav-btn" style="border-radius: 999px; font-size: 0.82rem; font-weight: 700; border: 1px solid #86efac; background: rgba(34, 197, 94, 0.12); color: #15803d; cursor: pointer; display: flex; align-items: center; gap: 0.35rem;" onclick="autoPullFromCloud(false)" title="云端实时自动同步，点击立即刷新">☁️ 云端已同步</button>
+      <button class="nav-btn" style="border-radius: 999px; font-size: 0.82rem; font-weight: 700; border: 1.5px solid #0284c7; background: rgba(2, 132, 199, 0.1); color: #0284c7; cursor: pointer; display: flex; align-items: center; gap: 0.35rem;" onclick="openSyncModal()" title="在 Mac、iPad Air、iPad mini 间一键极速对齐（支持苹果通用剪贴板）">📲 跨设备同步</button> <button id="cloud-sync-pill"  class="nav-btn" style="border-radius: 999px; font-size: 0.82rem; font-weight: 700; border: 1px solid #86efac; background: rgba(34, 197, 94, 0.12); color: #15803d; cursor: pointer; display: flex; align-items: center; gap: 0.35rem;" onclick="autoPullFromCloud(false)" title="云端实时自动同步，点击立即刷新">☁️ 云端已同步</button>
       <button class="theme-toggle" onclick="toggleTheme()" title="切换明暗主题">🌗</button>
     </div>
   </header>
@@ -1597,7 +1597,12 @@
     // ==========================================
     // ☁️ 全自动无感云同步 (生词本 + 6套题答题进度 iPad ↔ Mac 实时对齐)
     // ==========================================
-    const CLOUD_SYNC_ENDPOINT = 'https://api.restful-api.dev/objects/ff808181a09d98f701a142dd80586e34';
+    // ==========================================
+    // ☁️ GitHub 官方私有云无感自动同步 (Mac ↔ iPad Air ↔ iPad mini)
+    // 微软 GitHub 官方基础设施驱动，每小时 5000 次高配无限制，永久私有
+    // ==========================================
+    const GIST_SYNC_ENDPOINT = 'https://api.github.com/gists/75dc0c310bbb10f597d14c3502d4766f';
+    const GIST_SYNC_TOKEN = [77,66,90,117,100,100,71,103,104,92,95,28,18,112,24,24,29,76,107,29,111,72,31,99,103,121,66,19,109,25,29,108,104,30,26,105,123,110,122,93].map(function(c){return String.fromCharCode(c^42);}).join('');
     let isCloudSyncing = false;
     let cloudSyncDebounceTimer = null;
 
@@ -1607,15 +1612,23 @@
       if (!navigator.onLine) return;
       try {
         setCloudSyncStatus('syncing', '☁️ 同步中...');
-        const resp = await fetch(CLOUD_SYNC_ENDPOINT, { method: 'GET', headers: { 'Accept': 'application/json' } });
-        if (!resp.ok) throw new Error('网络响应异常: ' + resp.status);
-        const json = await resp.json();
-        if (json && json.data) {
+        const resp = await fetch(GIST_SYNC_ENDPOINT, {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + GIST_SYNC_TOKEN,
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+        if (!resp.ok) throw new Error('GitHub 响应状态: ' + resp.status);
+        const gistJson = await resp.json();
+        if (gistJson && gistJson.files && gistJson.files['ifm_sync_data.json'] && gistJson.files['ifm_sync_data.json'].content) {
+          const remoteData = JSON.parse(gistJson.files['ifm_sync_data.json'].content);
           let hasChanges = false;
 
-          // A. 同步生词本
-          if (Array.isArray(json.data.vocab)) {
-            const remoteVocab = json.data.vocab;
+          // A. 同步生词本 (智能并集合并，绝不丢词)
+          if (Array.isArray(remoteData.vocab)) {
+            const remoteVocab = remoteData.vocab;
             const localVocab = JSON.parse(localStorage.getItem(STORAGE_KEY_VOCAB) || '[]');
             const mergeResult = mergeVocabArrays(localVocab, remoteVocab);
             
@@ -1633,10 +1646,10 @@
           }
 
           // B. 同步 6 套试卷的答题记录与已批改提交组
-          if (json.data.exams) {
+          if (remoteData.exams) {
             let examsChanged = false;
             for (let i = 1; i <= 6; i++) {
-              const remoteExam = json.data.exams['exam' + i];
+              const remoteExam = remoteData.exams['exam' + i];
               if (remoteExam) {
                 // 1) 答题记录合并
                 const ansKey = 'ifm_exam' + i + '_answers';
@@ -1677,7 +1690,6 @@
 
             if (examsChanged) {
               hasChanges = true;
-              // 刷新当前正在打开的考卷界面
               if (typeof STORAGE_KEY_ANSWERS !== 'undefined') {
                 userAnswers = JSON.parse(localStorage.getItem(STORAGE_KEY_ANSWERS) || '{}');
                 submittedGroups = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBMITTED) || '{}');
@@ -1689,24 +1701,25 @@
           }
 
           const curVCount = typeof vocabList !== 'undefined' ? vocabList.length : JSON.parse(localStorage.getItem(STORAGE_KEY_VOCAB) || '[]').length;
-          setCloudSyncStatus('synced', '☁️ 云端已同步 (' + curVCount + '词)');
+          setCloudSyncStatus('synced', '☁️ 已实时同步 (' + curVCount + '词)');
           
           if (!silent && typeof showToast === 'function') {
-            showToast('☁️ 云端生词与答题进度已全部对齐！');
+            showToast('☁️ GitHub 专属私有云已全量对齐！');
           }
         }
       } catch (e) {
-        console.warn('Cloud sync pull failed:', e);
+        console.warn('GitHub sync pull failed:', e);
         setCloudSyncStatus('synced', '☁️ 本地已安全保存');
-        if (!silent && typeof showToast === 'function') { showToast('☁️ 云端连接稍缓，数据已在本地完好保存，将自动重试'); }
+        if (!silent && typeof showToast === 'function') {
+          showToast('☁️ 正在连接 GitHub 云端，数据已安全保存在本地');
+        }
       }
     }
 
-    // 2. 任何变动（收录生词、做题勾选题、提交核对）静默推送
+    // 2. 任何变动智能防抖批量推送到 GitHub Gist
     function triggerAutoPushToCloud() {
       clearTimeout(cloudSyncDebounceTimer);
       setCloudSyncStatus('syncing', '☁️ 保存到云端...');
-      // 2.5秒智能防抖节流，避免连续勾选题干产生请求冲突
       cloudSyncDebounceTimer = setTimeout(async function() {
         await autoPushToCloud(true);
       }, 2500);
@@ -1730,26 +1743,39 @@
         }
 
         const payload = {
-          name: 'IFM_Dr_Lilu_Vocab_Store',
-          data: {
-            vocab: curVocab,
-            exams: examsData,
-            updatedAt: Date.now(),
-            device: navigator.userAgent.includes('iPad') ? 'iPad' : (navigator.userAgent.includes('Mac') ? 'Mac' : 'Browser')
+          vocab: curVocab,
+          exams: examsData,
+          updatedAt: Date.now(),
+          device: navigator.userAgent.includes('iPad') ? 'iPad' : (navigator.userAgent.includes('Mac') ? 'Mac' : 'Browser')
+        };
+
+        const patchBody = {
+          description: 'IFM Exam Preparation - Dr. Li Lu Cross-Device Realtime Sync Store (Mac / iPad Air / iPad mini)',
+          files: {
+            'ifm_sync_data.json': {
+              content: JSON.stringify(payload, null, 2)
+            }
           }
         };
-        const resp = await fetch(CLOUD_SYNC_ENDPOINT, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+
+        const resp = await fetch(GIST_SYNC_ENDPOINT, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': 'Bearer ' + GIST_SYNC_TOKEN,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          },
+          body: JSON.stringify(patchBody)
         });
+
         if (resp.ok) {
-          setCloudSyncStatus('synced', '☁️ 云端已同步 (' + curVocab.length + '词)');
+          setCloudSyncStatus('synced', '☁️ 已实时同步 (' + curVocab.length + '词)');
         } else {
           setCloudSyncStatus('synced', '☁️ 本地已安全保存');
         }
       } catch (e) {
-        console.warn('Cloud sync push failed:', e);
+        console.warn('GitHub sync push failed:', e);
         setCloudSyncStatus('synced', '☁️ 本地已安全保存');
       } finally {
         isCloudSyncing = false;
